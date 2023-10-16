@@ -17,6 +17,7 @@ export default function LoginPage() {
   const [updateEmailUser] = useUserStore(
     useShallow((state:any) => [state.updateEmailUser])
   )
+  
   // console.log({user});
 
   const login = async (e:any) => {

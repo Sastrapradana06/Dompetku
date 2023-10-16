@@ -8,7 +8,6 @@ export async function POST(request: NextRequest) {
   // const res = await request.json()
   const cookieStore = cookies()
   const uid = cookieStore.get('uid')
-  // console.log(uid?.value);
 
   
   if (!uid) {
@@ -17,18 +16,11 @@ export async function POST(request: NextRequest) {
       message: 'Not authenticated',
     });
   } else {
-    const logoutSuccess = await handleLogOut()
-    console.log(logoutSuccess);
-    if(logoutSuccess) {
-      cookieStore.delete('uid')
-      return NextResponse.json({
-        status: 200,
-        message: `Succes  ${uid?.value}`,
-      })
-    } else {
-      return NextResponse.json({status: 500, message: 'Sign Out Failed'})
-    }
-    
+    cookieStore.delete('uid');
+    return NextResponse.json({
+      status: 200,
+      message: `Logout successful`,
+    });
   }
 }
 
