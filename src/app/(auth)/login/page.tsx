@@ -30,24 +30,50 @@ export default function LoginPage() {
     if(user.email && user.password) {
       setIsLoading(true)
 
-      const auth = getAuth(app)
-      await signInWithEmailAndPassword(auth, user.email, user.password)
-      .then((userCredential) => {
-        const users = userCredential.user;
-        console.log(users.uid);
-        updateEmailUser(user.email)
-        document.cookie = `uid=${users.uid}; path=/`
+      // const auth = getAuth(app)
+      // await signInWithEmailAndPassword(auth, user.email, user.password)
+      // .then((userCredential) => {
+      //   const users = userCredential.user;
+      //   console.log(users.uid);
+      //   updateEmailUser(user.email)
+      //   document.cookie = `uid=${users.uid}; path=/`
 
-        e.target.reset()
-        setIsLoading(false)
-        router.push('/home')
-      })
-      .catch((error) => {
-        console.log({error});
-        setError('Data Yang Anda Masukkan Tidak Benar')
-        setIsLoading(false)
-      });
+      //   e.target.reset()
+      //   setIsLoading(false)
+      //   router.push('/home')
+      // })
+      // .catch((error) => {
+      //   console.log({error});
+      //   setError('Data Yang Anda Masukkan Tidak Benar')
+      //   setIsLoading(false)
+      // });
       
+      const response = await fetch('/api/login', {
+        method: "POST",
+        body: JSON.stringify({
+          email: user.email,
+          password: user.password
+        })
+      })
+
+      const responseBody = await response.json();
+      // console.log({responseBody});
+      switch (responseBody.status) {
+        case 200:
+          e.target.reset()
+          setIsLoading(false)
+          router.push('/home')
+          break;
+        case 500:
+          e.target.reset()
+          setIsLoading(false)
+          setError('Email Sudah Terdaftar')
+          break;
+        default:
+          setError('Login Failed')
+          break;
+      }
+
     } else {
       setError('Isi Data Anda')
     }

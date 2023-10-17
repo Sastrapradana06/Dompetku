@@ -27,22 +27,34 @@ export default function RegisterPage() {
     if(user.name && user.email) {
       if(user.password === user.confirm) {
         setIsLoading(true)
-        const auth = getAuth(app)
-        await createUserWithEmailAndPassword(auth, user.email, user.password)
-          .then((userCredential) => {
-            const users = userCredential.user;
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: user.name,
+            email: user.email,
+            password: user.password
+          })
+        });
+        
+        const responseBody = await response.json();
+        // console.log(responseBody);
+        
+        switch (responseBody.status) {
+          case 200:
             e.target.reset()
             setIsLoading(false)
-            // console.log({users});
             router.push('/login')
-            
-          })
-          .catch((err) => {
-            console.log(err);
+            break;
+          case 500:
+            e.target.reset()
             setIsLoading(false)
             setError('Email Sudah Terdaftar')
-            e.target.reset()
-          })
+            break;
+          default:
+            setError('Login Failed')
+            break;
+        }
+        
       } else {
         setError('Confirm Password Tidak Sama')
       }
