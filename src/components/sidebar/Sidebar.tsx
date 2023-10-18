@@ -12,7 +12,7 @@ export default function Sidebar() {
     })
 
     const response = await res.json()
-    console.log(response);
+    // console.log(response);
     if(response.status === 200) {
       router.push('/login')
     } else {

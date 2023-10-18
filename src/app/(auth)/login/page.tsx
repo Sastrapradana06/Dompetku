@@ -29,24 +29,7 @@ export default function LoginPage() {
 
     if(user.email && user.password) {
       setIsLoading(true)
-
-      // const auth = getAuth(app)
-      // await signInWithEmailAndPassword(auth, user.email, user.password)
-      // .then((userCredential) => {
-      //   const users = userCredential.user;
-      //   console.log(users.uid);
-      //   updateEmailUser(user.email)
-      //   document.cookie = `uid=${users.uid}; path=/`
-
-      //   e.target.reset()
-      //   setIsLoading(false)
-      //   router.push('/home')
-      // })
-      // .catch((error) => {
-      //   console.log({error});
-      //   setError('Data Yang Anda Masukkan Tidak Benar')
-      //   setIsLoading(false)
-      // });
+      setError('')
       
       const response = await fetch('/api/login', {
         method: "POST",
@@ -60,14 +43,14 @@ export default function LoginPage() {
       // console.log({responseBody});
       switch (responseBody.status) {
         case 200:
+          router.push('/home')
           e.target.reset()
           setIsLoading(false)
-          router.push('/home')
           break;
         case 500:
           e.target.reset()
           setIsLoading(false)
-          setError('Email Sudah Terdaftar')
+          setError('Pastikan Data Yang Anda Masukkan Sudah Benar!')
           break;
         default:
           setError('Login Failed')

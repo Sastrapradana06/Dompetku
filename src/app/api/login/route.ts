@@ -19,8 +19,9 @@ export async function POST(req:NextRequest) {
       console.log({token});
       return NextResponse.json({ status: 200, message: 'Login Succes'})
     
-    } catch (err) {
-      console.log(err);
+    } catch (err:any) {
+      console.log(err.code);
+      console.log(err.message);
       return NextResponse.json({ status: 500, message: 'Email Is Not Ready'})
     }
   } else {
