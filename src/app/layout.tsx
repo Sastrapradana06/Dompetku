@@ -1,10 +1,8 @@
-// 'use client'
+
 
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-// import { usePathname } from 'next/navigation'
-// import Sidebar from '@/components/sidebar/Sidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,13 +16,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // const pathname = usePathname()
-  // const noNavbar = ['/login', '/register', '/']
   
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* {!noNavbar.includes(pathname) ? <Sidebar /> : null} */}
         {children}
       </body>
     </html>

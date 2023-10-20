@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   const cookieStore = cookies()
   const token = cookieStore.get('token')
   const auth = getAuth(app)
-  console.log(token);
+  // console.log(token);
   
   if (token) {
     try {

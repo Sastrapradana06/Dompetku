@@ -1,11 +1,18 @@
 'use client'
-import { handleLogOut } from "@/lib/firebase/init";
+
+import Link from "next/link"
+
 
 export default function AboutPage() {
   return (
     <main>
       <h1>About Page</h1>
-      <button onClick={async () => handleLogOut()}>log out</button>
+      <button>
+        <Link href={'/updateEmail'}>Update Email</Link>
+      </button>
+      <button>
+        <Link href={'/updatePassword'}>Update Password</Link>
+      </button>
     </main>
   )
 };

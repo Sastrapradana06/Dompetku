@@ -1,5 +1,5 @@
 import { app } from "@/lib/firebase/service";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged  } from "firebase/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
@@ -8,7 +8,7 @@ export async function POST(req:NextRequest) {
   const {email, password} = request
   const auth = getAuth(app)
   const cookieStore = cookies()
-  console.log({request});
+  // console.log('current', auth.currentUser);
 
   if(request) {
     try {
@@ -16,7 +16,7 @@ export async function POST(req:NextRequest) {
       const user = userCredentials.user;
       const token = await user.getIdToken()
       cookieStore.set('token', token)
-      console.log({token});
+      // console.log({user});
       return NextResponse.json({ status: 200, message: 'Login Succes'})
     
     } catch (err) {
