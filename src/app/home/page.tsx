@@ -1,7 +1,8 @@
 'use client'
-import { app } from "@/lib/firebase/service"
+import { app, db } from "@/lib/firebase/service"
 import useUserStore from "@/store/store"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link"
 // import { useEffect } from "react"
 
@@ -9,9 +10,26 @@ import Link from "next/link"
 export default function HomePage() {
   const user = useUserStore((state:any) => state.user)
   const auth = getAuth(app)
-  onAuthStateChanged(auth, (user) => {
-    console.log(user);
+
+  onAuthStateChanged(auth, async (user) => {
+    const uid = user?.uid
+    console.log(uid);
+    if(uid) {
+      const docRef = doc(db, 'users', uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        console.log('Data Pengguna:', userData);
+        // return userData;
+      } else {
+        console.log('Dokumen tidak ditemukan.');
+        // return null;
+      }
+    }
   })
+
+
 
 
 

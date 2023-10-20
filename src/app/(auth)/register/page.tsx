@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { app } from "@/lib/firebase/service";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
 import useUserStore from "@/store/store";
 // import { useShallow } from 'zustand/react/shallow'
 
@@ -14,7 +16,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const auth = getAuth(app);
   const router = useRouter();
-
+  const db = getFirestore(app)
   const register = async (e: any) => {
     e.preventDefault();
     const user = {
@@ -29,8 +31,14 @@ export default function RegisterPage() {
         setIsLoading(true);
 
         createUserWithEmailAndPassword(auth, user.email, user.password)
-          .then((userCredential) => {
-            console.log(userCredential.user);
+          .then(async (userCredential) => {
+            const users = userCredential.user;
+            await setDoc(doc(db, "users", users.uid), {
+              name: user.email,
+              email: user.email,
+              image: '/',
+              usaha: 'none'
+            })
             
             e.target.reset();
             setIsLoading(false);

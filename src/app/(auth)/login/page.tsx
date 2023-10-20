@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { signInWithEmailAndPassword, getAuth, getIdToken, onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword, getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/lib/firebase/service";
 import { useShallow } from "zustand/react/shallow";
 import useUserStore from "@/store/store";
