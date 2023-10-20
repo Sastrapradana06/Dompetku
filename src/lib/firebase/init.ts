@@ -1,31 +1,19 @@
-import { getAuth, signOut } from "firebase/auth";
-import { app } from "@/lib/firebase/service";
 
-// export const handleLogOut = () => {
-//   const auth = getAuth(app);
-//   signOut(auth)
-//   .then(() => {
-//     const user = auth.currentUser
-//     console.log(user?.uid);
-    
-//     console.log("user keluar");
-//     return false
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//     return false
-//   });
-// }
-export const handleLogOut = async () => {
-  const auth = getAuth(app);
-  try {
-    await signOut(auth);
-    const user = auth.currentUser
-    console.log(user?.uid);
-    console.log("user keluar");
-    return true; // Berhasil logout
-  } catch (err) {
-    console.log(err);
-    return false; // Gagal logout
-  }
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth"
+import { app } from "./service"
+
+const auth = getAuth(app);
+
+export const logIn = (email: string, password: string) => {
+  signInWithEmailAndPassword(auth, email, password)
+    .then( async (userCredential) => {
+      const user = userCredential.user;
+      const token = await user.getIdToken()
+      console.log(token);
+      document.cookie = (`token=${token}`)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      console.log({ errorCode });
+    });
 }
