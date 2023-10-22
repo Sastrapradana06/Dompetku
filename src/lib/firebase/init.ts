@@ -5,8 +5,6 @@ import { auth, provider } from "./service";
 import { doc, setDoc } from "firebase/firestore";
 import { userDataRegister } from "@/type";
 
-
-
 export const signInUser = (email: string, password: string, callback:Function) => {
   signInWithEmailAndPassword(auth, email, password)
     .then( async (userCredential) => {

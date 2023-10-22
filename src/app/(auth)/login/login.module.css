@@ -20,6 +20,7 @@
   justify-content: center;
   gap: 10px;
   align-items: center;
+  font-size: .8rem;
 }
 
 .form {
@@ -39,7 +40,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 .email input, .pw input {
@@ -59,6 +60,10 @@
   text-align: center;
 }
 
+.title h1 {
+  font-family: 'Playpen Sans', cursive;
+}
+
 .error {
   color: salmon;
   margin-top: 10px;
@@ -67,13 +72,20 @@
 .btn_login {
   width: 100%;
   padding: 5px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   cursor: pointer;
   margin-top: 20px;
-  /* background-color: rgb(55, 168, 221); */
+  font-weight: 600;
   background-color: salmon;
   border: 1px solid black;
   color: white;
+  transition: all .3s;
+}
+
+.btn_login:hover {
+  background-color: rgb(244, 110, 95);
 }
 
 .bottom {
@@ -97,6 +109,7 @@
 .google {
   padding: 2px 5px;
   font-size: .9rem;
+  cursor: pointer;
 }
 
 .register a {

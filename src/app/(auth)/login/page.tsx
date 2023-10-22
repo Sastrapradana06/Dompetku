@@ -6,16 +6,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/lib/firebase/service";
-import { useShallow } from "zustand/react/shallow";
-import useUserStore from "@/store/store";
 import { signInUser, signInWithGoogle } from "@/lib/firebase/init";
+import PopUp from "@/components/pop-up/pop_up";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPopUp, setIsPopUp] = useState(false);
   const router = useRouter();
 
-  const [updateEmailUser] = useUserStore(useShallow((state: any) => [state.updateEmailUser]));
   const auth = getAuth(app)
   onAuthStateChanged(auth, (user) => {
     console.log(user);
@@ -25,11 +24,13 @@ export default function LoginPage() {
   const handleCallbackSiginGoogle = (callback:Function) => {
     setIsLoading(true)
     setError(undefined)
+    setIsPopUp(true)
     if(callback) {
       console.log('succes');
       setIsLoading(false)
       router.push('/home')
     } else {
+      setIsPopUp(false)
       console.log('failed');
       setError('Gagal Login')
       setIsLoading(false)
@@ -49,11 +50,13 @@ export default function LoginPage() {
         console.log('Berhasil', callback);
         e.target.reset()
         setIsLoading(false)
+        setIsPopUp(true)
         router.push('/home')
       } else {
         console.log('Gagal', callback);
         setError('Harap Pastikan Data Sudah Anda Benar!')
         e.target.reset()
+        setIsPopUp(false)
         setIsLoading(false)
       }
     }
@@ -69,6 +72,7 @@ export default function LoginPage() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
+        {isPopUp ? <PopUp /> : null}
         <div className={styles.title}>
           <h1>Login Page</h1>
           {error ? <p className={styles.error}>{error}</p> : null}

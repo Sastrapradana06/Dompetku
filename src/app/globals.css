@@ -1,9 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&family=Oswald:wght@500&family=Playpen+Sans:wght@500&family=Poppins&family=Roboto&family=Signika+Negative&display=swap');
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: monospace;
+  font-family: Poppins;
 }
 
 html,
@@ -14,6 +15,6 @@ body {
 }
 
 body {
-    background-color: rgba(1, 65, 255, 0.3);
+  background-color: rgb(194, 190, 190);
     font-family: monospace;
 }

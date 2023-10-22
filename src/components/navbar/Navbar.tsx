@@ -16,7 +16,7 @@ export default function Navbar() {
     <nav className={styles.nav}>
       <div className={styles.container}>
         <div className="">
-          <h1 onClick={() => router.push("/")}>Finansial</h1>
+          <h1 onClick={() => router.push("/")} className={styles.brand}>BisnisKu_</h1>
           <p>{uid}</p>
         </div>
         <div className={styles.login}>
