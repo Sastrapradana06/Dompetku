@@ -5,33 +5,22 @@ import { useRouter } from "next/navigation";
 import styles from './siderbar.module.css'
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "@/lib/firebase/service";
+import { signOutUser } from "@/lib/firebase/init";
 
 export default function Sidebar() {
   const router = useRouter();
   const auth = getAuth(app)
-  
-  const handleSignOut = async () => {
-    signOut(auth)
-    .then(() => {
-      document.cookie = ("token=")
+
+  const handleErrorSignOut= (callback:Function) => {
+    if(callback) {
+      // console.log('Berhasil', callback);
       router.push('/login')
-    }).catch((error) => {
-      console.log(error.code);
+    } else {
+      console.log('error signOut');
       
-    });
-
-    // const res = await fetch('api/logout', {
-    //   method: 'POST',
-    // })
-
-    // const response = await res.json()
-    // console.log(response);
-    // if(response.status === 200) {
-    //   router.push('/login')
-    // } else {
-    //   console.log('failed logout');
-    // }
+    }
   }
+
 
   return (
     <nav className={styles.nav}>
@@ -43,7 +32,7 @@ export default function Sidebar() {
           <Link href={'/about'}>About</Link>
         </div>
         <div className="">
-          <button onClick={handleSignOut} className={styles.btn}>Sign Out</button>
+          <button onClick={() => signOutUser(handleErrorSignOut)} className={styles.btn}>Sign Out</button>
         </div>
       </div>
     </nav>

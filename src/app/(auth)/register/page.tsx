@@ -9,6 +9,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 import useUserStore from "@/store/store";
+import { registerUser } from "@/lib/firebase/init";
 // import { useShallow } from 'zustand/react/shallow'
 
 export default function RegisterPage() {
@@ -16,9 +17,10 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const auth = getAuth(app);
   const router = useRouter();
-  const db = getFirestore(app)
+  const db = getFirestore(app);
   const register = async (e: any) => {
     e.preventDefault();
+    setError(undefined);
     const user = {
       name: e.target.username.value,
       email: e.target.email.value,
@@ -26,57 +28,30 @@ export default function RegisterPage() {
       confirm: e.target.confirm.value,
     };
 
+    const userDataRegister = {
+      email: user.email,
+      password: user.password,
+      name: user.name,
+    };
+
+    const handleCallbackRegister = (callback: Function) => {
+      if (callback) {
+        console.log("succes");
+        e.target.reset();
+        setIsLoading(false);
+        router.push("/login");
+      } else {
+        console.log("failed");
+        setError("Harap Pastikan Data Anda Benar!");
+        e.target.reset();
+        setIsLoading(false);
+      }
+    };
+
     if (user.name && user.email) {
       if (user.password === user.confirm) {
         setIsLoading(true);
-
-        createUserWithEmailAndPassword(auth, user.email, user.password)
-          .then(async (userCredential) => {
-            const users = userCredential.user;
-            await setDoc(doc(db, "users", users.uid), {
-              name: user.email,
-              email: user.email,
-              image: '/',
-              usaha: 'none'
-            })
-            
-            e.target.reset();
-            setIsLoading(false);
-            router.push("/login");
-          })
-          .catch((err) => {
-            setError('Harap Pastikan Data Anda Benar!')
-            e.target.reset();
-            setIsLoading(false);
-          });
-
-        // const response = await fetch('/api/register', {
-        //   method: 'POST',
-        //   body: JSON.stringify({
-        //     name: user.name,
-        //     email: user.email,
-        //     password: user.password
-        //   })
-        // });
-
-        // const responseBody = await response.json();
-        // // console.log(responseBody);
-
-        // switch (responseBody.status) {
-        //   case 200:
-        //     e.target.reset()
-        //     setIsLoading(false)
-        //     router.push('/login')
-        //     break;
-        //   case 500:
-        //     e.target.reset()
-        //     setIsLoading(false)
-        //     setError('Email Sudah Terdaftar')
-        //     break;
-        //   default:
-        //     setError('Login Failed')
-        //     break;
-        // }
+        registerUser(userDataRegister, handleCallbackRegister);
       } else {
         setError("Confirm Password Tidak Sama");
       }

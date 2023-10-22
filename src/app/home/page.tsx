@@ -13,7 +13,7 @@ export default function HomePage() {
 
   onAuthStateChanged(auth, async (user) => {
     const uid = user?.uid
-    console.log(uid);
+    // console.log(uid);
     if(uid) {
       const docRef = doc(db, 'users', uid);
       const docSnap = await getDoc(docRef);
@@ -21,18 +21,11 @@ export default function HomePage() {
       if (docSnap.exists()) {
         const userData = docSnap.data();
         console.log('Data Pengguna:', userData);
-        // return userData;
       } else {
         console.log('Dokumen tidak ditemukan.');
-        // return null;
       }
     }
   })
-
-
-
-
-
   
 
   return (
