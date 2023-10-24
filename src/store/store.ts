@@ -5,14 +5,19 @@ type userData = {
   uid: string | null
 }
 
-const useUserStore = create((set) => ({
+const useStore = create((set) => ({
   user : {
     email: null,
     nama: null
   },
   updateEmailUser: (email:string) => set({user: {email}}),
   updateNamaUser: (nama:string) => set({user: {nama}}),
-  resetUser: () => set({user: {email: null, nama: null}})
-}))
+  resetUser: () => set({user: {email: null, nama: null}}),
 
-export default useUserStore;
+
+  isSidebar : false,
+  setIsSidebar : (state:any) => set({isSidebar: state})
+}));
+
+
+export default useStore;

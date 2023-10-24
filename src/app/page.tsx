@@ -1,6 +1,6 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-import Navbar from '@/components/navbar/Navbar'
+import Image from "next/image";
+import styles from "./page.module.css";
+import Navbar from "@/components/navbar/Navbar";
 
 export default function Home() {
   return (
@@ -16,7 +16,10 @@ export default function Home() {
             <p>&quot;Menjaga keuangan dengan baik adalah kunci kesuksesan dalam dunia bisnis. Bagi pengusaha, keuangan yang teratur dan terkelola dengan bijak membantu dalam menghadapi tantangan dan peluang yang muncul.&quot;</p>
           </div>
         </div>
+      <div className={styles.footer}>
+        <p>Powered by | Sastrapradana</p>
+      </div>
       </div>
     </main>
-  )
+  );
 }

@@ -1,40 +1,26 @@
-"use client"
-
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import styles from './siderbar.module.css'
-import { getAuth, signOut } from "firebase/auth";
-import { app } from "@/lib/firebase/service";
-import { signOutUser } from "@/lib/firebase/init";
+import styles from './sidebar.module.css'
+import useStore from "@/store/store";
+import { useShallow } from 'zustand/react/shallow'
+import Profil from './Profil';
+import ListLink from './ListLink';
 
 export default function Sidebar() {
-  const router = useRouter();
-  const auth = getAuth(app)
-
-  const handleErrorSignOut= (callback:Function) => {
-    if(callback) {
-      // console.log('Berhasil', callback);
-      router.push('/login')
-    } else {
-      console.log('error signOut');
-      
-    }
-  }
-
+  const [isSidebar, setIsSidebar] = useStore(
+    useShallow((state:any) => [state.isSidebar, state.setIsSidebar])
+  );
 
   return (
-    <nav className={styles.nav}>
+    <main className={isSidebar ? styles.sidebar_aktif : styles.sidebar_close} >
+      <div className={styles.close}>
+        <button onClick={() => setIsSidebar(false)}>Close</button>      
+      </div>
       <div className={styles.container}>
-        <div className={styles.title}>
-          <h1>Sidebar</h1>
-        </div>
-        <div className={styles.link}>
-          <Link href={'/about'}>About</Link>
-        </div>
-        <div className="">
-          <button onClick={() => signOutUser(handleErrorSignOut)} className={styles.btn}>Sign Out</button>
+        <Profil />
+        <ListLink />
+        <div className={styles.footer_sidebar}>
+          <p>BisnisKu.com</p>
         </div>
       </div>
-    </nav>
+    </main>
   )
 };

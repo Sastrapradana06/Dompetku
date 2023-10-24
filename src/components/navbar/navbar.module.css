@@ -35,16 +35,17 @@
   text-decoration: none;
 }
 
-.btn_login, .btn_out{
+.btn_login{
   padding: 5px 15px ;
   background-color: rgb(36, 37, 36);
   border-radius: 5px;
   border: none;
   transition: all .3s;
+  border: 2px solid white;
 }
 
 .btn_login:hover {
-  background-color: rgb(76, 75, 75);
+  background-color: rgb(44, 93, 173);
 }
 
 .btn_out {

@@ -20,7 +20,7 @@
   justify-content: center;
   gap: 10px;
   align-items: center;
-  font-size: .8rem;
+  font-size: .9rem;
 }
 
 .form {
@@ -58,6 +58,7 @@
 
 .title {
   text-align: center;
+  /* font-size: 1.5rem; */
 }
 
 .title h1 {
