@@ -17,7 +17,7 @@ export default function NavHome() {
     useShallow((state:any) => [state.isSidebar, state.setIsSidebar])
   );
 
-  console.log({pathname});
+  // console.log({pathname});
   
 
   const handleErrorSignOut= (callback:Function) => {

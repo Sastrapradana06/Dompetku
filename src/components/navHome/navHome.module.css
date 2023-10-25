@@ -4,8 +4,9 @@
   box-sizing: border-box;
   background-color: #262626;
   color: wheat;
-  position: relative;
+  position: fixed;
   font-size: .9rem;
+  z-index: 2;
 }
 
 .container {
@@ -41,4 +42,10 @@
   border-radius: 100%;
   overflow: hidden;
   cursor: pointer;
+}
+
+@media screen and (min-width: 1024px) {
+  .nav {
+    border-bottom: 1px solid rgb(194, 190, 190);
+  }
 }

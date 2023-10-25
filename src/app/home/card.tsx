@@ -15,7 +15,7 @@ export default function CardComponent() {
         <div className={styles.money}>
           <div className={styles.money_user}>
             <FaMoneyBillWave size="30" fill="rgb(52, 210, 102)"/>
-            <h2>Rp.300.000</h2>
+            <h2>Rp.30.000.000</h2>
           </div>
           <div className={styles.money_teks}>
             <p>Kelola Keuanganmu dengan baik</p>

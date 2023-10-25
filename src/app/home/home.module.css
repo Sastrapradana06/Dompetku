@@ -2,6 +2,7 @@
   width: 100%;
   min-height: 90vh;
   max-height: max-content;
+  margin-top: 40px;
   /* border: 1px solid black; */
 }
 
@@ -85,16 +86,15 @@
 }
 
 /* Riwayat */
-.riwayat {
+.container {
   width: 100%;
   min-height: 350px;
   padding-top: 10px;
   max-height: max-content;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  /* align-items: center; */
+  gap: 5px;
   
 }
 
@@ -128,7 +128,124 @@
 }
 
 .input input:focus {
-  border-bottom: 2px solid rgb(92, 127, 216);
+  border-bottom: 2px solid rgb(95, 137, 243);
+}
+
+.keterangan {
+  width: max-content;
+  height: max-content;
+  padding: 5px 20px;
+  background-color: rgb(39, 38, 38);
+  color: white;
+  border: 2px solid salmon;
+  border-radius: 10px;
+  font-size: .8rem;
+  /* font-style: italic; */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teks_keterangan {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.teks_keterangan button {
+  background-color: salmon;
+  color: white;
+  font-size: .8rem;
+  border: none;
+  padding: 0 10px;
+  border-radius: 7px;
+}
+
+.keterangan .btn {
+  display: flex;
+  gap: 10px;
+}
+
+.keterangan .btn button {
+  background-color: rgb(95, 137, 243);
+  color: white;
+  font-size: .8rem;
+  border: none;
+  padding: 0 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.keterangan .btn button:hover {
+  background-color: rgb(64, 104, 206);
+}
+
+.riwayat {
+  min-width: 100%;
+  max-width: max-content;
+  height: max-content;
+  background-color: rgb(39, 38, 38);
+  color: white;
+  border: 2px solid salmon;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 5px;
+}
+
+
+.card_riwayat {
+  width: 100%;
+  min-height: 100px;
+  max-height: max-content;
+  border: 2px solid rgb(95, 137, 243);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.date, .time {
+  width: 100%;
+  /* border: 1px solid white; */
+  display: flex;
+  justify-content: end;
+  font-size: .8rem;
+}
+.date {
+  font-style: italic;
+  color: rgb(166, 162, 162);
+}
+
+.time p {
+  border: 1px solid white;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+.deskripsi_card {
+  width: 100%;
+  /* border: 1px solid white; */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.property {
+  font-size: 1.2rem;
+  color: salmon;
+}
+
+.price {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 
@@ -136,3 +253,47 @@
   color:  rgb(52, 210, 102);
 }
 
+
+@media screen and (min-width: 1024px) {
+  .main {
+    width: 70%;
+    /* border: 1px solid crimson; */
+    margin-left: 380px;
+  }
+
+  /* card */
+  .hallo p{
+    font-size: 1.3rem;
+  }
+
+  .hallo h1 {
+    font-size: 1.5rem;
+  }
+
+
+  .money_user h2 {
+    font-size: 2rem;
+  }
+
+  .pictures {
+    margin-top: -80px;
+    height: max-content;
+  }
+
+  .pictures img {
+    width: 250px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  /* Riwayat */
+
+  .input {
+    gap: 20px;
+  }
+
+  .input input {
+    width: 50%;
+    font-size: 1rem;
+  }
+}
