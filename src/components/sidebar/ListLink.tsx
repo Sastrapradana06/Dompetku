@@ -2,8 +2,9 @@
 
 import styles from "./sidebar.module.css";
 import { BsFilePersonFill } from "react-icons/bs";
+import { BiSolidHome } from "react-icons/bi";
 import { PiChartLineUpBold, PiChartLineDownBold } from "react-icons/pi";
-import { LuGanttChartSquare } from "react-icons/lu";
+import { LuGanttChartSquare, LuSettings } from "react-icons/lu";
 import Link from "next/link";
 import useStore from "@/store/store";
 import { useShallow } from 'zustand/react/shallow'
@@ -17,7 +18,7 @@ export default function ListLink() {
     {
       page: "Home",
       link: "/home",
-      icons: <LuGanttChartSquare size="27" fill="" />,
+      icons: <BiSolidHome size="27" fill="salmon" />,
     },
     {
       page: "Profil",
@@ -37,7 +38,7 @@ export default function ListLink() {
     {
       page: "Setting",
       link: "/setting",
-      icons: <LuGanttChartSquare size="27" fill="" />,
+      icons: <LuSettings size="27" fill="" />,
     },
   ];
 
