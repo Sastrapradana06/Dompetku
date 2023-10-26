@@ -4,7 +4,7 @@ import { FaMoneyBillWave } from "react-icons/fa";
 import { BsBarChartFill } from "react-icons/bs";
 import mySvg from './img1.svg'
 import Image from 'next/image';
-export default function CardComponent() {
+export default function Header() {
   return (
     <div className={styles.card}>
       <div className={styles.hallo}>
