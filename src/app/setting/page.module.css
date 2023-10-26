@@ -1,0 +1,130 @@
+.setting {
+  width: 100%;
+  max-height: max-content;
+  min-height: 90vh;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.head {
+  width: 100%;
+  height: max-content;
+  /* border: 1px solid red; */
+}
+
+.head p {
+  width: max-content;
+  background-color: #262626;
+  color: white;
+  padding: 3px 25px;
+  border: 2px solid salmon;
+  border-radius: 10px;
+}
+
+/* edit profil */
+.edit_profil, .setting_keuangan {
+  width: 100%;
+  height: max-content;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border: 1px solid crimson;
+  align-items: center;
+  background-color: #262626;
+  padding: 10px;
+  border: 2px solid salmon;
+  border-radius: 10px;
+}
+
+.img {
+  width: 100%;
+  height: max-content;
+  /* border: 1px solid crimson; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+}
+
+.card_img {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  border: 1px solid rgb(95, 137, 243);
+  overflow: hidden;
+}
+
+.card_img img {
+  object-fit: cover;
+}
+
+.img button {
+  padding: 0 8px;
+  font-size: .8rem;
+  background-color: transparent;
+  border: 1px solid rgb(95, 137, 243);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form {
+  width: 100%;
+  height: max-content;
+  /* border: 1px solid rgb(95, 137, 243); */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.form div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.username label, .usaha label, .pengeluaran label, .pemasukkan label {
+  font-style: italic;
+  color: salmon;
+  font-size: .8rem;
+}
+
+.username input, .usaha input, .pengeluaran input, .pemasukkan input {
+  background-color: transparent;
+  border: 1px solid rgb(95, 137, 243);
+  border-radius: 5px;
+  color: white;
+  outline: none;
+  padding: 5px 10px;
+}
+
+.btn_ubah {
+  width: 100%;
+  background-color: salmon;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px 0;
+  color: white;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.btn_ubah:hover {
+  background-color: rgb(222, 111, 98);
+}
+
+@media screen and (min-width: 1024px) {
+  .form, .btn_ubah {
+    width: 60%;
+  }
+}
