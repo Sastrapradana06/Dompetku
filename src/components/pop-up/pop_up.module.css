@@ -8,8 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Pastikan tampil di atas konten lain */
-  /* animation: slide-down 0.5s ease; */
+  z-index: 1000;
 }
 
 .popup_content {

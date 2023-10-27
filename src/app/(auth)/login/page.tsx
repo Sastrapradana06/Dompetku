@@ -17,7 +17,7 @@ export default function LoginPage() {
 
   const auth = getAuth(app)
   onAuthStateChanged(auth, (user) => {
-    console.log(user);
+    // console.log(user);
   })
   // console.log({user});
 

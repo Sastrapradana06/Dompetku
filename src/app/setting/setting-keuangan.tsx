@@ -13,7 +13,7 @@ export default function SettingKeuangan() {
           <input type="text" name='pemasukkan'/>
         </div>
       </div>
-      <button className={styles.btn_ubah}>Ubah</button>
+      <button className={styles.btn_ubah}>Setting</button>
     </div>
   )
 };

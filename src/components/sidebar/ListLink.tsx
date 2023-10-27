@@ -21,11 +21,6 @@ export default function ListLink() {
       icons: <BiSolidHome size="27" fill="salmon" />,
     },
     {
-      page: "Profil",
-      link: "/profil",
-      icons: <BsFilePersonFill size="27" fill="white" />,
-    },
-    {
       page: "Keluar",
       link: "/riwayat-keluar",
       icons: <PiChartLineUpBold size="27" fill="crimson" />,
@@ -34,6 +29,11 @@ export default function ListLink() {
       page: "Masuk",
       link: "/riwayat-masuk",
       icons: <PiChartLineDownBold size="27" fill="green" />,
+    },
+    {
+      page: "Mutasi",
+      link: "/mutasi",
+      icons: <LuGanttChartSquare size="27" fill="" />,
     },
     {
       page: "Setting",
