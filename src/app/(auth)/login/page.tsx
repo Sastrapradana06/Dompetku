@@ -4,9 +4,7 @@ import Link from "next/link";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { app } from "@/lib/firebase/service";
-import { signInUser, signInWithGoogle } from "@/lib/firebase/init";
+import { getUserLogin, signInUser, signInWithGoogle } from "@/lib/firebase/init";
 import PopUp from "@/components/pop-up/pop_up";
 
 export default function LoginPage() {
@@ -14,11 +12,13 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isPopUp, setIsPopUp] = useState(false);
   const router = useRouter();
-
-  const auth = getAuth(app)
-  onAuthStateChanged(auth, (user) => {
-    // console.log(user);
-  })
+  //   console.log('dari login', user);
+  //   if(user) {
+  //     const userData = await getUserLogin(user.email)
+  //     console.log({userData});
+      
+  //   }
+  // })
   // console.log({user});
 
   const handleCallbackSiginGoogle = (callback:Function) => {

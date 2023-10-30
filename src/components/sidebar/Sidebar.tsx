@@ -8,16 +8,18 @@ import ListLink from './ListLink';
 import { useState } from 'react';
 import PopUpComponent from '../pop-up-component/pop-up-signOut';
 import Image from 'next/image';
+import imgUser from './imgUser.jpg'
 
 export default function Sidebar() {
   const [isShowImg, setIsShowImg] = useState<Boolean>(false)
-  const [urlImg, setUrlImg] = useState<String>('/')
+  const [urlImg, setUrlImg] = useState<String | any>('/')
   const [isSidebar, setIsSidebar] = useStore(
     useShallow((state:any) => [state.isSidebar, state.setIsSidebar])
   );
 
-  const handleShowImg = () => {
+  const handleShowImg = (url:any) => {
     console.log('masuk');
+    setUrlImg(url)
     setIsShowImg(true)
   }
 
@@ -27,7 +29,7 @@ export default function Sidebar() {
         <PopUpComponent>
           <div className={styles.card_img}>
             <Image
-              src={`${urlImg}`}
+              src={urlImg === 'none' ? imgUser : urlImg || ''}
               alt='imgUser'
               width={0}
               height={0}

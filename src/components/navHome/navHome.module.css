@@ -40,13 +40,14 @@
   background-color: rgb(212, 88, 74);
 }
 
-.img_user {
+.img_user img{
   width: 35px;
   height: 35px;
   border: 1px solid white;
   border-radius: 100%;
   overflow: hidden;
   cursor: pointer;
+  object-fit: cover;
 }
 
 /* popup */

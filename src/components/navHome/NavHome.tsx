@@ -1,29 +1,39 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./navHome.module.css";
-import { signOutUser } from "@/lib/firebase/init";
+import { signOutUser} from "@/lib/firebase/init";
 import Sidebar from "../sidebar/Sidebar";
 import useStore from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PopUpComponent from "../pop-up-component/pop-up-signOut";
+import { getUserWithLocalStorage } from "@/utils";
+import Image from "next/image";
+import imgUser from '../sidebar/imgUser.jpg'
+
+
+interface User {
+  name: string;
+  image: string ;
+  usaha: string;
+}
+
 
 export default function NavHome() {
   const [isPopUp, setIsPopUp] = useState<Boolean>(false);
+  const [user, setUser] = useState<User | undefined>(undefined);
+
   const router = useRouter();
   const pathname = usePathname();
   const navOff = ["/", "/login", "/register"];
-  const [isSidebar, setIsSidebar] = useStore(useShallow((state: any) => [state.isSidebar, state.setIsSidebar]));
-
-  // console.log({pathname});
+  const [setIsSidebar] = useStore(useShallow((state: any) => [state.setIsSidebar]));
 
   const handleErrorSignOut = (callback: Function) => {
     if (callback) {
-      // console.log('Berhasil', callback);
       router.push("/login");
+      localStorage.clear()
     } else {
       console.log("error signOut");
     }
@@ -33,6 +43,16 @@ export default function NavHome() {
     signOutUser(handleErrorSignOut)
     setIsPopUp(false)
   }
+
+  useEffect(() => {
+    console.log(user);
+      if (!user) {
+        const userData = getUserWithLocalStorage();
+        setUser(userData);
+      }
+  }, [user])
+
+
 
   return (
     <>
@@ -53,7 +73,9 @@ export default function NavHome() {
           ) : null}
           <Sidebar />
           <div className={styles.container}>
-            <div className={styles.img_user} onClick={() => setIsSidebar(true)}></div>
+            <div className={styles.img_user} onClick={() => setIsSidebar(true)}>
+              <Image src={user?.image === 'none' ? imgUser : user?.image || ''} alt="imgUser" width={0} height={0} />
+            </div>
             <div className="">
               <button onClick={() => setIsPopUp(true)} className={styles.btn}>
                 Sign Out

@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { Metadata } from "next";
 import InputPengeluaran from "./input-pengeluaran";
 import CardPengeluaran from "./card-pengeluaran";
+import CreatePengeluaran from "./create-pengeluaran";
 
 export const metadata: Metadata = {
   title: "Riwayat Keluar",
@@ -16,9 +17,7 @@ export default function RiwayatKeluarPage() {
   return (
     <Main>
       <div className={styles.container}>
-        <div className={styles.teks_head}>
-          <p>Riwayat Pengeluaran Anda</p>
-        </div>
+        <CreatePengeluaran />
         <InputPengeluaran />
         <CardPengeluaran />
       </div>

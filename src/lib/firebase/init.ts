@@ -1,8 +1,8 @@
 
-import {signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth"
+import {signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword} from "firebase/auth"
 import { app, db } from "./service"
 import { auth, provider } from "./service";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc, query, where  } from "firebase/firestore";
 import { userDataRegister } from "@/type";
 
 export const signInUser = (email: string, password: string, callback:Function) => {
@@ -10,7 +10,9 @@ export const signInUser = (email: string, password: string, callback:Function) =
     .then( async (userCredential) => {
       const user = userCredential.user;
       const token = await user.getIdToken()
-      console.log(token);
+      const dataUserLogin = await getUserLogin(user.email)
+      localStorage.setItem("data-user", JSON.stringify(dataUserLogin));
+      // console.log(dataUserLogin);
       document.cookie = (`token=${token}`)
       callback(true)
     })
@@ -43,10 +45,13 @@ export const signInWithGoogle = (callback:Function) => {
         email: user.email,
         image: user.photoURL,
         name: user.displayName,
-        usaha: 'none'
+        usaha: 'none',
+        saldo: 0,
+        provider: 'google'
       }
       // console.log({userData});
       await setDoc(doc(db, "users", user.uid), userData)
+      localStorage.setItem("data-user", JSON.stringify(userData));
       document.cookie = `token=${token}`
       callback(true)
     }).catch((err) => {
@@ -64,8 +69,10 @@ export const registerUser = (data:userDataRegister, callback:Function) => {
       await setDoc(doc(db, "users", users.uid), {
         name: name,
         email: email,
-        image: '/',
-        usaha: 'none'
+        image: 'none',
+        usaha: 'none',
+        saldo: 0,
+        provider: 'email'
       })
       callback(true)
     }).catch((err) => {
@@ -73,4 +80,19 @@ export const registerUser = (data:userDataRegister, callback:Function) => {
       console.log({errorCode});
       callback(false)
     })
+}
+
+export const getUserLogin = async (email:string | null) => {
+  const userCollection = collection(db, 'users')
+  const q = query(userCollection, where('email', '==', email));
+  const querySnapshot = await getDocs(q)
+
+  if (querySnapshot.empty) {
+    console.log('Tidak ada pengguna dengan email ini.');
+    return null; 
+  } else {
+    const userDoc = querySnapshot.docs[0];
+    const userData = userDoc.data();
+    return userData;
+  }
 }

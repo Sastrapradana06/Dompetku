@@ -75,6 +75,10 @@
   text-align: center;
 }
 
+.img_user {
+  cursor: pointer;
+}
+
 .img_user img {
   width: 100px;
   height: 100px;
@@ -151,14 +155,17 @@
   height: 200px;
   border-radius: 100%;
   object-fit: cover;
-  border: 2px solid red;
+  border: 2px solid white;
 }
 
 .card_img button {
-  background-color: crimson;
+  border: 1px solid crimson;
+  background-color: #181818;
+  border-radius: 10px;
   font-size: .9rem;
-  padding: 3px 10px;
+  padding: 3px 13px;
   cursor: pointer;
+  color: white;
 }
 
 
