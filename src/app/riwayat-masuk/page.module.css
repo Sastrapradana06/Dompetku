@@ -25,3 +25,88 @@
   border-radius: 7px;
   font-size: .8rem;
 }
+
+/* form create */
+.pop_up {
+  width: 90%;
+  height: max-content;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border: 1px solid crimson;
+  align-items: center;
+  background-color: #262626;
+  padding: 10px;
+  border: 2px solid salmon;
+  border-radius: 10px;
+  color: white;
+}
+
+.form {
+  width: 100%;
+  height: max-content;
+  /* border: 1px solid rgb(95, 137, 243); */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.nomimal, .deskripsi {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pop_up .form  input {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid rgb(95, 137, 243);
+  border-radius: 5px;
+  color: white;
+  outline: none;
+  padding: 5px 10px;
+}
+
+.btn_form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  /* border: 1px solid rgb(95, 137, 243); */
+}
+
+.btn_form button {
+  padding: 1px 15px;
+  font-size: .9rem;
+  border: 1px solid white;
+  transition: all .3s;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.btn_form .btn_buat {
+  background-color: rgb(95, 137, 243);
+}
+
+.btn_form .btn_buat:hover {
+  background-color: rgb(73, 116, 225);
+}
+
+
+.btn_form .btn_close {
+  background-color: crimson;
+}
+
+.btn_form .btn_close:hover {
+  background-color: rgb(183, 12, 46);
+}
+
+
+@media screen and (min-width: 1024px) {
+  .pop_up {
+    width: 50%;
+  }
+}

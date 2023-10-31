@@ -1,5 +1,5 @@
 
-import {signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword} from "firebase/auth"
+import {signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, onAuthStateChanged} from "firebase/auth"
 import { app, db } from "./service"
 import { auth, provider } from "./service";
 import { collection, doc, getDocs, setDoc, query, where  } from "firebase/firestore";
@@ -42,9 +42,10 @@ export const signInWithGoogle = (callback:Function) => {
       const token = credential?.accessToken;
       const user = result.user;
       const userData = {
+        user_id: user.uid,
+        name: user.displayName,
         email: user.email,
         image: user.photoURL,
-        name: user.displayName,
         usaha: 'none',
         saldo: 0,
         provider: 'google'
@@ -67,6 +68,7 @@ export const registerUser = (data:userDataRegister, callback:Function) => {
     .then(async (userCredential) => {
       const users = userCredential.user;
       await setDoc(doc(db, "users", users.uid), {
+        user_id: users.uid,
         name: name,
         email: email,
         image: 'none',
@@ -95,4 +97,15 @@ export const getUserLogin = async (email:string | null) => {
     const userData = userDoc.data();
     return userData;
   }
+}
+
+
+export const getUserLoginAuth = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      return user
+    } else {
+      return undefined
+    }
+  });
 }
