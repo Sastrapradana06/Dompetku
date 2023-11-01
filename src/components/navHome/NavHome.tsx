@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import styles from "./navHome.module.css";
-import { signOutUser} from "@/lib/firebase/init";
+import { signOutUser } from "@/lib/firebase/auth";
 import Sidebar from "../sidebar/Sidebar";
 import useStore from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
@@ -11,15 +11,13 @@ import { useState, useEffect } from "react";
 import PopUpComponent from "../pop-up-component/pop-up-signOut";
 import { getUserWithLocalStorage } from "@/utils";
 import Image from "next/image";
-import imgUser from '../sidebar/imgUser.jpg'
-
+import imgUser from "../sidebar/imgUser.jpg";
 
 interface User {
   name: string;
-  image: string ;
+  image: string;
   usaha: string;
 }
-
 
 export default function NavHome() {
   const [isPopUp, setIsPopUp] = useState<Boolean>(false);
@@ -33,26 +31,24 @@ export default function NavHome() {
   const handleErrorSignOut = (callback: Function) => {
     if (callback) {
       router.push("/login");
-      localStorage.clear()
+      localStorage.clear();
     } else {
       console.log("error signOut");
     }
   };
 
   const handleSignOut = () => {
-    signOutUser(handleErrorSignOut)
-    setIsPopUp(false)
-  }
+    signOutUser(handleErrorSignOut);
+    setIsPopUp(false);
+  };
 
   useEffect(() => {
     console.log(user);
-      if (!user) {
-        const userData = getUserWithLocalStorage();
-        setUser(userData);
-      }
-  }, [user])
-
-
+    if (!user) {
+      const userData = getUserWithLocalStorage();
+      setUser(userData);
+    }
+  }, [user]);
 
   return (
     <>
@@ -65,8 +61,12 @@ export default function NavHome() {
                   <p>Apakah Anda Yakin Ingin Keluar?</p>
                 </div>
                 <div className={styles.btn_card}>
-                  <button className={styles.yakin} onClick={handleSignOut}>Yakin</button>
-                  <button className={styles.tidak} onClick={() => setIsPopUp(false)}>Tidak</button>
+                  <button className={styles.yakin} onClick={handleSignOut}>
+                    Yakin
+                  </button>
+                  <button className={styles.tidak} onClick={() => setIsPopUp(false)}>
+                    Tidak
+                  </button>
                 </div>
               </div>
             </PopUpComponent>
@@ -74,7 +74,7 @@ export default function NavHome() {
           <Sidebar />
           <div className={styles.container}>
             <div className={styles.img_user} onClick={() => setIsSidebar(true)}>
-              <Image src={user?.image === 'none' ? imgUser : user?.image || ''} alt="imgUser" width={0} height={0} />
+              <Image src={user?.image === "none" ? imgUser : user?.image || ""} alt="imgUser" width={0} height={0} />
             </div>
             <div className="">
               <button onClick={() => setIsPopUp(true)} className={styles.btn}>

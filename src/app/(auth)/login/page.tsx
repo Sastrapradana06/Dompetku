@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { getUserLogin, signInUser, signInWithGoogle } from "@/lib/firebase/init";
+import { signInUser, signInWithGoogle } from "@/lib/firebase/auth";
 import PopUp from "@/components/pop-up/pop_up";
 
 export default function LoginPage() {
@@ -16,54 +16,54 @@ export default function LoginPage() {
   //   if(user) {
   //     const userData = await getUserLogin(user.email)
   //     console.log({userData});
-      
+
   //   }
   // })
   // console.log({user});
 
-  const handleCallbackSiginGoogle = (callback:Function) => {
-    setIsLoading(true)
-    setError(undefined)
-    setIsPopUp(true)
-    if(callback) {
-      console.log('succes');
-      setIsLoading(false)
-      router.push('/home')
+  const handleCallbackSiginGoogle = (callback: Function) => {
+    setIsLoading(true);
+    setError(undefined);
+    setIsPopUp(true);
+    if (callback) {
+      console.log("succes");
+      setIsLoading(false);
+      router.push("/home");
     } else {
-      setIsPopUp(false)
-      console.log('failed');
-      setError('Gagal Login')
-      setIsLoading(false)
+      setIsPopUp(false);
+      console.log("failed");
+      setError("Gagal Login");
+      setIsLoading(false);
     }
-  }
+  };
 
   const login = async (e: any) => {
     e.preventDefault();
-    setError(undefined)
+    setError(undefined);
     const user = {
       email: e.target.email.value,
       password: e.target.password.value,
     };
-    
-    const handleCallbackSigin = (callback:Function) => {
-      if(callback) {
-        console.log('Berhasil', callback);
-        e.target.reset()
-        setIsLoading(false)
-        setIsPopUp(true)
-        router.push('/home')
-      } else {
-        console.log('Gagal', callback);
-        setError('Harap Pastikan Data Sudah Anda Benar!')
-        e.target.reset()
-        setIsPopUp(false)
-        setIsLoading(false)
-      }
-    }
 
-    if(user.email && user.password) {
-      setIsLoading(true)
-      signInUser(user.email, user.password, handleCallbackSigin)
+    const handleCallbackSigin = (callback: Function) => {
+      if (callback) {
+        console.log("Berhasil", callback);
+        e.target.reset();
+        setIsLoading(false);
+        setIsPopUp(true);
+        router.push("/home");
+      } else {
+        console.log("Gagal", callback);
+        setError("Harap Pastikan Data Sudah Anda Benar!");
+        e.target.reset();
+        setIsPopUp(false);
+        setIsLoading(false);
+      }
+    };
+
+    if (user.email && user.password) {
+      setIsLoading(true);
+      signInUser(user.email, user.password, handleCallbackSigin);
     } else {
       setError("Isi Data Anda");
     }
@@ -93,7 +93,9 @@ export default function LoginPage() {
         <div className={styles.bottom}>
           <div className={styles.opsi_login}>
             <p>Login Dengan</p>
-            <button className={styles.google} onClick={() => signInWithGoogle(handleCallbackSiginGoogle)}>Google</button>
+            <button className={styles.google} onClick={() => signInWithGoogle(handleCallbackSiginGoogle)}>
+              Google
+            </button>
           </div>
           <div className={styles.register}>
             <p>Belum Memiliki Akun?</p>

@@ -17,33 +17,33 @@ export default function CreatePengeluaran() {
 
   const handleCallback = (callback: boolean) => {
     if(callback) {
-      console.log('succes create');
-      setMessage('Berhasil')
+      // console.log('succes create');
+      setMessage('Berhasil Membuat Pengeluaran Baru')
+      setIsPopUp(false)
     } else {
       console.log('gagal create');
       setMessage('Gagal')
     }
   }
 
-
   const handleSubmit = async (e:any) => {
     e.preventDefault()
     const user = getUserWithLocalStorage()
-    
-    const dataUser = {
-      userId: user.user_id,
-      userName: user.name,
-      nominal: e.target.nominal.value,
-      deskripsi: e.target.deskripsi.value
+    setMessage(undefined)
+
+    if(e.target.nominal.value && e.target.deskripsi.value) {
+      const dataUser = {
+        userId: user.user_id,
+        userName: user.name,
+        nominal: e.target.nominal.value,
+        deskripsi: e.target.deskripsi.value
+      }
+      // console.log({user, dataUser});
+      await createPengeluaran(dataUser, handleCallback)
+    } else {
+      setMessage('Harap isi Input')
     }
-    console.log({user, dataUser});
-
-    await createPengeluaran(dataUser, handleCallback)
-    
-    
   }
-
-
 
   return (
     <div className={styles.teks_head}>

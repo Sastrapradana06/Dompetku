@@ -5,12 +5,9 @@ import styles from "./register.module.css";
 import Link from "next/link";
 import { useState } from "react";
 import { app } from "@/lib/firebase/service";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-
-import useUserStore from "@/store/store";
-import { registerUser } from "@/lib/firebase/init";
-// import { useShallow } from 'zustand/react/shallow'
+import { getAuth } from "firebase/auth";
+import { getFirestore} from "firebase/firestore";
+import { registerUser } from "@/lib/firebase/auth";
 
 export default function RegisterPage() {
   const [error, setError] = useState<string | undefined>(undefined);
