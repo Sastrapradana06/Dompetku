@@ -1,39 +1,37 @@
-'use client'
+"use client";
 
 import CardComponent from "@/components/card/card";
 import LoadingCard from "@/components/loading/loading-card";
-import { getPengeluaranUser } from "@/lib/firebase/transaksi";
+import { getRiwayatUser } from "@/lib/firebase/transaksi";
 import { getUserWithLocalStorage } from "@/utils";
 import { useEffect, useState } from "react";
+import useStore from "@/store/store";
+import { useShallow } from 'zustand/react/shallow';
 
 export default function CardPengeluaran() {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [dataRiwayatKeluar, setDataRiwayatKeluar] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [dataRiwayatKeluar, setDataRiwayatKeluar] = useState<dataPengeluaran[] | any>([]);
+  const [dataRiwayatKeluar, setDataRiwayatKeluar] = useStore(
+    useShallow((state:any) => [state.dataRiwayatKeluar, state.setDataRiwayatKeluar])
+  );
 
-  // const handleCallback = (callback: any) => {
-  //   console.log({callback});
-  // } 
+  console.log({ dataRiwayatKeluar });
+  useEffect(() => {
+    async function getData() {
+      if(dataRiwayatKeluar.length === 0) {
+        setIsLoading(true)
+        const user = getUserWithLocalStorage();
+        console.log(user);
+        if (user) {
+          const data = await getRiwayatUser(user.user_id, 'pengeluaran');
+          const shortData = data.reverse()
+          setDataRiwayatKeluar(shortData);
+          setIsLoading(false)
+        }
+      }
+    }
+    getData();
+  }, [dataRiwayatKeluar.length, setDataRiwayatKeluar]);
 
-  // useEffect(() => {
-  //   const user = getUserWithLocalStorage()
-  //   console.log(user);
-
-  //   async function getData() {
-  //     if(user) {
-  //       await getPengeluaranUser(user.user_id, handleCallback)
-  //     }
-  //   }
-  //   getData()
-
-  // }, [])
-
-  return (
-    <>
-      {!isLoading ? (
-        <CardComponent data={dataRiwayatKeluar}/>
-      ): (
-        <LoadingCard />
-      )}
-    </>
-  )
-};
+  return <>{!isLoading ? <CardComponent data={dataRiwayatKeluar} /> : <LoadingCard />}</>;
+}

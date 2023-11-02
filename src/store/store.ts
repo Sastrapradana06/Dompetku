@@ -1,9 +1,6 @@
 import { create } from 'zustand'
+import { typeRiwayat } from '@/type';
 
-type userData = {
-  email: string | null ,
-  uid: string | null
-}
 
 const useStore = create((set) => ({
   user : {
@@ -20,7 +17,13 @@ const useStore = create((set) => ({
 
 
   isSidebar : false,
-  setIsSidebar : (state:any) => set({isSidebar: state})
+  setIsSidebar : (state:any) => set({isSidebar: state}),
+
+  dataRiwayatKeluar: [],
+  setDataRiwayatKeluar: (state:typeRiwayat[]) => set({dataRiwayatKeluar: state}),
+
+  dataRiwayatMasuk: [],
+  setDataRiwayatMasuk: (state:typeRiwayat[]) => set({dataRiwayatMasuk: state})
 }));
 
 

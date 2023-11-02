@@ -58,17 +58,14 @@ export const createPemasukkan = async (dataUser: any, callback: Function) => {
   }
 }
 
-export const getPengeluaranUser = async (id: string, callback: Function) => {
-  const q = query(collection(db, "pengeluaran"), where("user_id", "==", id));
+export const getRiwayatUser = async (id: string, collectionName:string) => {
 
+  const q = query(collection(db, collectionName), where("user_id", "==", id));
+  const snapshot = await getDocs(q)
+  const data = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  }))
 
-  const querySnapshot = await getDocs(q);
-  // const pengeluaranData: any[] = []
-
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    console.log(data);
-    callback(data)
-  });
-
+  return data
 } 

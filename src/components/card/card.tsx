@@ -1,9 +1,9 @@
 import styles from "./card.module.css";
-import { ImArrowDown, ImArrowUp } from "react-icons/im";
+import { ImArrowUp } from "react-icons/im";
 import { MdDelete } from "react-icons/md";
-import LoadingCard from "../loading/loading-card";
+import { typeRiwayat } from "@/type";
 
-export default function CardComponent({ data }: { data: string[] }) {
+export default function CardComponent({ data }: { data: typeRiwayat[] }) {
   // console.log(data);
   
   return (
@@ -13,25 +13,29 @@ export default function CardComponent({ data }: { data: string[] }) {
           <p>Belum Ada Riwayat</p>
         </div>
       ): (
-        <div className={styles.card_riwayat}>
-          <div className={styles.date}>kamis, 10 november 2022</div>
-          <div className={styles.deskripsi_card}>
-            <div className={styles.property}>
-              <p>Gaji Karyawan</p>
+        data.map((item, i) => {
+          return (
+            <div className={styles.card_riwayat} key={i}>
+              <div className={styles.date}>{item.tanggal}</div>
+              <div className={styles.deskripsi_card}>
+                <div className={styles.property}>
+                  <p>{item.deskripsi}</p>
+                </div>
+                <div className={styles.price}>
+                  <ImArrowUp size="15" fill="crimson" />
+                  <p>Uang Keluar:</p>
+                  <h2>Rp.{item.nominal.toLocaleString('id-ID')}</h2>
+                </div>
+              </div>
+              <div className={styles.time}>
+                <button className={styles.btn_delete}>
+                  <MdDelete size="20" fill="crimson" />
+                </button>
+                <p>{item.jam}</p>
+              </div>
             </div>
-            <div className={styles.price}>
-              <ImArrowUp size="15" fill="crimson" />
-              <p>Uang Keluar:</p>
-              <h2>Rp.6.000.000</h2>
-            </div>
-          </div>
-          <div className={styles.time}>
-            <button className={styles.btn_delete}>
-              <MdDelete size="20" fill="crimson" />
-            </button>
-            <p>12:45</p>
-          </div>
-        </div>
+          )
+        })
       )}
     </div>
   );
