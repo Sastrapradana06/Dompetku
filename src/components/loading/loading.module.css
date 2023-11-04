@@ -80,6 +80,18 @@
   object-fit: cover;
 }
 
+
+/* img profil */
+.img_profil_loading {
+  width: 35px;
+  height: 35px;
+  border: 1px solid white;
+  background-color: rgb(118, 112, 112);
+  border-radius: 100%;
+  cursor: pointer;
+  animation: blingking 2s infinite ease-in-out;
+}
+
 @keyframes blingking {
   0% {
       opacity: 1;

@@ -15,17 +15,16 @@ export default function CardPemasukkan() {
     useShallow((state:any) => [state.dataRiwayatMasuk, state.setDataRiwayatMasuk])
   );
 
-  console.log({ dataRiwayatMasuk });
+  // console.log({ dataRiwayatMasuk });
   useEffect(() => {
     async function getData() {
       if(dataRiwayatMasuk.length === 0) {
         setIsLoading(true)
         const user = getUserWithLocalStorage();
-        console.log(user);
+        // console.log(user);
         if (user) {
           const data = await getRiwayatUser(user.user_id, 'pemasukkan');
-          const shortData = data.reverse()
-          setDataRiwayatMasuk(shortData);
+          setDataRiwayatMasuk(data);
           setIsLoading(false)
         }
       }

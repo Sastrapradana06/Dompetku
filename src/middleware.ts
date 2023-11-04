@@ -9,6 +9,8 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get('token')
 
+  const protectedPages = ['/home', '/about', '/riwayat-keluar', '/riwayat-masuk', '/mutasi', '/setting']
+
 
   if (config.matcher.includes(pathname)) {
     if (!token?.value) {
@@ -18,10 +20,8 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-
-
 }
 
 export const config = {
-  matcher: ['/home', '/about', '/updateEmail', '/updatePassword'],
+  matcher: ['/home', '/about', '/riwayat-keluar', '/riwayat-masuk', '/mutasi', '/setting'],
 }

@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import { useState } from "react";
 import PopUpComponent from "@/components/pop-up-component/pop-up-signOut";
 import { getUserWithLocalStorage } from "@/utils";
-import { createPemasukkan } from "@/lib/firebase/transaksi";
+import { createTransaksiUser } from "@/lib/firebase/transaksi";
 
 export default function CreatePemasukkan() {
   const [isPopUp, setIsPopUp] = useState<boolean>(false);
@@ -29,21 +29,23 @@ export default function CreatePemasukkan() {
   const handleSubmit = async (e:any) => {
     e.preventDefault()
     const user = getUserWithLocalStorage()
+    const angkaPattern = /^\d+$/;
     setMessage(undefined)
 
     if(e.target.nominal.value && e.target.deskripsi.value) {
-      const dataUser = {
-        userId: user.user_id,
-        userName: user.name,
-        nominal: e.target.nominal.value,
-        deskripsi: e.target.deskripsi.value
+      if(angkaPattern.test(e.target.nominal.value)) {
+        const dataUser = {
+          userId: user.user_id,
+          userName: user.name,
+          nominal: e.target.nominal.value,
+          deskripsi: e.target.deskripsi.value
+        }
+        // console.log({user, dataUser});
+        await createTransaksiUser(dataUser, "pemasukkan" , handleCallback)
       }
-      // console.log({user, dataUser});
-      await createPemasukkan(dataUser, handleCallback)
+      setMessage('Harap isi Input Dengan Benar!!')
     } else {
       setMessage('Harap isi Input')
-      console.log('ga ada input');
-      
     }
   }
 

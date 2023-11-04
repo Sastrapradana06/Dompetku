@@ -95,7 +95,7 @@
   /* font-style: italic; */
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .teks_keterangan {
@@ -110,6 +110,12 @@
   font-size: .8rem;
   border: none;
   padding: 0 10px;
+  border-radius: 7px;
+}
+
+.teks_diurutkan {
+  border: 1px solid rgb(95, 137, 243);
+  padding: 2px 10px;
   border-radius: 7px;
 }
 

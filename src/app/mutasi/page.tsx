@@ -13,7 +13,7 @@ export default function MutasiPage() {
     <Main>
       <div className={styles.container}>
         <div className={styles.teks_head}>
-          <p>Riwayat Pemasukkan Anda</p>
+          <p>Semua Riwayat Anda</p>
         </div>
         <InputMutasi />
         <CardMutasi />

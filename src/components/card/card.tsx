@@ -1,5 +1,5 @@
 import styles from "./card.module.css";
-import { ImArrowUp } from "react-icons/im";
+import { ImArrowUp,ImArrowDown } from "react-icons/im";
 import { MdDelete } from "react-icons/md";
 import { typeRiwayat } from "@/type";
 
@@ -22,8 +22,12 @@ export default function CardComponent({ data }: { data: typeRiwayat[] }) {
                   <p>{item.deskripsi}</p>
                 </div>
                 <div className={styles.price}>
-                  <ImArrowUp size="15" fill="crimson" />
-                  <p>Uang Keluar:</p>
+                  {item.type === 'pengeluaran' ? (
+                    <ImArrowUp size="15" fill="crimson" />
+                  ) : (
+                    <ImArrowDown size="15" fill="rgb(63, 221, 63)" />
+                  )}
+                  <p>{item.type === 'pengeluaran' ? "Uang Keluar" : "Uang Masuk"}:</p>
                   <h2>Rp.{item.nominal.toLocaleString('id-ID')}</h2>
                 </div>
               </div>

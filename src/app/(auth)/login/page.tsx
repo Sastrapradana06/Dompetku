@@ -6,27 +6,26 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signInUser, signInWithGoogle } from "@/lib/firebase/auth";
 import PopUp from "@/components/pop-up/pop_up";
+import useStore from "@/store/store";
+import { useShallow } from 'zustand/react/shallow';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isPopUp, setIsPopUp] = useState(false);
   const router = useRouter();
-  //   console.log('dari login', user);
-  //   if(user) {
-  //     const userData = await getUserLogin(user.email)
-  //     console.log({userData});
 
-  //   }
-  // })
-  // console.log({user});
+  const [setDataRiwayatKeluar, setDataRiwayatMasuk, clearRiwayat] = useStore(
+    useShallow((state: any) => [state.setDataRiwayatKeluar, state.setDataRiwayatMasuk, state.clearRiwayat])
+  )
 
   const handleCallbackSiginGoogle = (callback: Function) => {
     setIsLoading(true);
     setError(undefined);
     setIsPopUp(true);
     if (callback) {
-      console.log("succes");
+      setDataRiwayatKeluar([])
+      setDataRiwayatMasuk([])
       setIsLoading(false);
       router.push("/home");
     } else {
@@ -48,6 +47,7 @@ export default function LoginPage() {
     const handleCallbackSigin = (callback: Function) => {
       if (callback) {
         console.log("Berhasil", callback);
+        clearRiwayat()
         e.target.reset();
         setIsLoading(false);
         setIsPopUp(true);

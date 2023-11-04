@@ -10,22 +10,20 @@ import { useShallow } from 'zustand/react/shallow';
 
 export default function CardPengeluaran() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [dataRiwayatKeluar, setDataRiwayatKeluar] = useState<dataPengeluaran[] | any>([]);
   const [dataRiwayatKeluar, setDataRiwayatKeluar] = useStore(
     useShallow((state:any) => [state.dataRiwayatKeluar, state.setDataRiwayatKeluar])
   );
 
-  console.log({ dataRiwayatKeluar });
+  // console.log({ dataRiwayatKeluar });
   useEffect(() => {
     async function getData() {
       if(dataRiwayatKeluar.length === 0) {
         setIsLoading(true)
         const user = getUserWithLocalStorage();
-        console.log(user);
+        // console.log(user);
         if (user) {
           const data = await getRiwayatUser(user.user_id, 'pengeluaran');
-          const shortData = data.reverse()
-          setDataRiwayatKeluar(shortData);
+          setDataRiwayatKeluar(data);
           setIsLoading(false)
         }
       }
