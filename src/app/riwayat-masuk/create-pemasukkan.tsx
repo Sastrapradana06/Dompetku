@@ -5,11 +5,16 @@ import styles from "./page.module.css";
 import { useState } from "react";
 import PopUpComponent from "@/components/pop-up-component/pop-up-signOut";
 import { getUserWithLocalStorage } from "@/utils";
-import { createTransaksiUser } from "@/lib/firebase/transaksi";
+import { createTransaksiUser, monitorRiwayatUser } from "@/lib/firebase/transaksi";
+import useStore from "@/store/store";
+import { useShallow } from 'zustand/react/shallow';
 
 export default function CreatePemasukkan() {
   const [isPopUp, setIsPopUp] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
+  const [setDataRiwayatMasuk, clearRiwayatTerbaruAndsemuaRiwayat] = useStore(
+    useShallow((state:any) => [state.setDataRiwayatMasuk, state.clearRiwayatTerbaruAndsemuaRiwayat])
+  );
 
   const handleBtnCreate = () => {
     setIsPopUp(true);
@@ -42,6 +47,10 @@ export default function CreatePemasukkan() {
         }
         // console.log({user, dataUser});
         await createTransaksiUser(dataUser, "pemasukkan" , handleCallback)
+        monitorRiwayatUser(dataUser.userId, "pemasukkan", (data:any) => {
+          setDataRiwayatMasuk(data)
+          clearRiwayatTerbaruAndsemuaRiwayat()
+        })  
       }
       setMessage('Harap isi Input Dengan Benar!!')
     } else {

@@ -6,7 +6,7 @@ import LoadingCard from "@/components/loading/loading-card";
 import { useEffect, useState } from "react";
 import useStore from "@/store/store";
 import { useShallow } from 'zustand/react/shallow';
-import { getUserWithLocalStorage } from "@/utils";
+import { getUserWithLocalStorage, sortByNominal } from "@/utils";
 import { getAllRiwayat } from "@/lib/firebase/transaksi";
 
 
@@ -24,7 +24,9 @@ export default function RiwayatComponent() {
         // console.log(user);
         if (user) {
           const data = await getAllRiwayat(user.user_id);
-          const sliceData = data?.slice(0, 5)
+          console.log({data});
+          
+          const sliceData = data?.slice(0, 5).sort(sortByNominal)
           setDataRiwayatTerbaru(sliceData);
           setIsLoading(false)
         }

@@ -1,26 +1,29 @@
-import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "./service";
-import { sortByDate, sortByNominal } from "@/utils";
+import { generateRandomString, sortByDate, sortByNominal } from "@/utils";
 
 export const createTransaksiUser = async (dataUser: any, collectionName:string , callback: Function) => {
   const { userId, userName, nominal, deskripsi } = dataUser
-  // console.log({ dataUser });
 
-  const transactionsRef = collection(db, collectionName);
+  // const transactionsRef = collection(db, collectionName);
+  const id = generateRandomString()
   const date = new Date()
+  const transactionsRef = doc(db, collectionName, id);
 
   try {
     const newTransaction = {
+      id,
       user_id: userId,
       user_name: userName,
       nominal: parseFloat(nominal),
       deskripsi,
+      date: date.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }),
       tanggal: date.toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', }),
       jam: date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
       type: collectionName,
     };
-    // Menyimpan transaksi ke Firestore
-    await addDoc(transactionsRef, newTransaction);
+
+    await setDoc(transactionsRef, newTransaction);
     callback(true)
 
     console.log("Transaksi berhasil disimpan!");
@@ -31,9 +34,9 @@ export const createTransaksiUser = async (dataUser: any, collectionName:string ,
 }
 
 
-export const getRiwayatUser = async (id: string, collectionName:string) => {
+export const getRiwayatUser = async (user_id: string, collectionName:string) => {
 
-  const q = query(collection(db, collectionName), where("user_id", "==", id), orderBy("user_id"));
+  const q = query(collection(db, collectionName), where("user_id", "==", user_id));
   const snapshot = await getDocs(q)
   const data = snapshot.docs.map((doc) => ({
     id: doc.id,
@@ -41,11 +44,27 @@ export const getRiwayatUser = async (id: string, collectionName:string) => {
   }))
 
   if(data) {
-    const sortData = data.sort(sortByDate).sort(sortByNominal)
+    const sortData = data.sort(sortByDate)
     return sortData
   }
   return data
 } 
+
+export const monitorRiwayatUser = (user_id: string, collectionName: string, callback: Function) => {
+  const q = query(collection(db, collectionName), where("user_id", "==", user_id), orderBy("user_id"));
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const data = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    if (data) {
+      const sortData = data.sort(sortByDate);
+      callback(sortData); 
+    }
+
+  });
+  return unsubscribe
+}
 
 
 export const getAllRiwayat = async (id:string,) => {
@@ -55,9 +74,20 @@ export const getAllRiwayat = async (id:string,) => {
 
   if(pengeluaranUser || pemasukkanUser) {
     const allRiwayat = [...pengeluaranUser, ...pemasukkanUser]
-    const sortedRiwayat = allRiwayat.sort(sortByDate).sort(sortByNominal)
+    const sortedRiwayat = allRiwayat.sort(sortByDate)
     riwayatTerbaru = sortedRiwayat
     return riwayatTerbaru
   }
+
+}
+
+
+export const deleteRiwayat = async (user_id:string ,id: string, collectionName: string) => {
+
+    try {
+      await deleteDoc(doc(db, collectionName, id))
+    } catch(err) {
+      console.log(err)
+    }
 
 }

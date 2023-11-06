@@ -5,11 +5,16 @@ import styles from "./page.module.css";
 import { useState } from "react";
 import PopUpComponent from "@/components/pop-up-component/pop-up-signOut";
 import { getUserWithLocalStorage } from "@/utils";
-import { createTransaksiUser } from "@/lib/firebase/transaksi";
+import { createTransaksiUser, monitorRiwayatUser } from "@/lib/firebase/transaksi";
+import useStore from "@/store/store";
+import { useShallow } from 'zustand/react/shallow';
 
 export default function CreatePengeluaran() {
   const [isPopUp, setIsPopUp] = useState<boolean>(false)
   const [message, setMessage] = useState<string | undefined>(undefined)
+  const [setDataRiwayatKeluar, clearRiwayatTerbaruAndsemuaRiwayat] = useStore(
+    useShallow((state:any) => [state.setDataRiwayatKeluar, state.clearRiwayatTerbaruAndsemuaRiwayat])
+  );
 
   const handleBtnCreate = () => {
     setIsPopUp(true)
@@ -42,6 +47,11 @@ export default function CreatePengeluaran() {
         }
         // console.log({user, dataUser});
         await createTransaksiUser(dataUser, "pengeluaran", handleCallback)
+        monitorRiwayatUser(dataUser.userId, "pengeluaran", (data:any) => {
+          setDataRiwayatKeluar(data)
+          clearRiwayatTerbaruAndsemuaRiwayat()
+        })  
+        
       }
       setMessage('Harap isi Input Dengan Benar!!')
     } else {
@@ -62,7 +72,7 @@ export default function CreatePengeluaran() {
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.jumlah}>
                 <label htmlFor="">Masukkan Nominal</label>
-                <input type="text" name="nominal"/>
+                <input type="text" name="nominal" placeholder="100000"/>
               </div>
               <div className={styles.deskripsi}>
                 <label htmlFor="">Deskripsi Pengeluaran</label>

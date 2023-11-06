@@ -7,8 +7,8 @@ export const getUserWithLocalStorage =  () => {
 }
 
 export const sortByDate = (a:any, b:any) => {
-  const dateA = new Date(a.tanggal);
-  const dateB = new Date(b.tanggal);
+  const dateA = new Date(a.date);
+  const dateB = new Date(b.date);
 
   if (dateA < dateB) {
     return 1;
@@ -30,4 +30,17 @@ export const sortByNominal = (a:any, b:any) => {
   } else {
     return 0;
   }
+}
+
+
+export const generateRandomString = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+
+  for (let i = 0; i <= 15; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+
+  return randomString;
 }

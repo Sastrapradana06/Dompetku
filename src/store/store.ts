@@ -31,6 +31,7 @@ const useStore = create((set) => ({
   semuaRiwayatUser: [],
   setSemuaRiwayatUser: (state:typeRiwayat[]) => set({semuaRiwayatUser: state}),
 
+  clearRiwayatTerbaruAndsemuaRiwayat: () => set({dataRiwayatTerbaru: [], semuaRiwayatUser: []}),
   clearRiwayat: () => set({dataRiwayatKeluar: [], dataRiwayatMasuk:[], dataRiwayatTerbaru: [], semuaRiwayatUser: []})
 }));
 
