@@ -1,0 +1,34 @@
+.alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  animation: slideIn 0.3s ease-in-out forwards;
+}
+
+.card_message {
+  width: max-content;
+  height: max-content;
+  padding: 8px 25px;
+  border-radius: 10px;
+  background-color: #262626 ;
+  color: salmon;
+  border: 2px solid rgb(95, 137, 243) ;
+}
+
+
+@keyframes slideIn {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 100px;
+  }
+}

@@ -1,4 +1,4 @@
-import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "./service";
 import { generateRandomString, sortByDate, sortByNominal } from "@/utils";
 
@@ -83,11 +83,14 @@ export const getAllRiwayat = async (id:string,) => {
 
 
 export const deleteRiwayat = async (user_id:string ,id: string, collectionName: string) => {
-
     try {
       await deleteDoc(doc(db, collectionName, id))
     } catch(err) {
       console.log(err)
     }
 
+}
+
+export const searchRiwayat = async () => {
+  
 }

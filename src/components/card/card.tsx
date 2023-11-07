@@ -15,12 +15,10 @@ export default function CardComponent({ data }: { data: typeRiwayat[] }) {
   // console.log(data);
 
   const handleBtnDelete = async (id: string, collectionName: string, user_id:string) => {
-    console.log("masuk hapus", id, collectionName);
-    
     await deleteRiwayat(user_id, id, collectionName)
     monitorRiwayatUser(user_id, collectionName, (data:any) => {
       clearRiwayatTerbaruAndsemuaRiwayat()
-      console.log("masuk monitoring", data);
+      // console.log("masuk monitoring", data);
       if(collectionName === 'pengeluaran') { 
         setDataRiwayatKeluar(data)
       } else {
