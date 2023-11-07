@@ -44,3 +44,24 @@ export const generateRandomString = () => {
 
   return randomString;
 }
+
+type data = {
+  id: string
+  tanggal: string,
+  deskripsi: string
+}
+
+export const filteredItems = (item:any, key:string) => {
+  const filterItem = item.filter((data:data) => {
+    const tanggalItem = data.tanggal.toLowerCase();
+    const deskripsiItem = data.deskripsi.toLowerCase();
+    const valueInput = key.toLowerCase()
+
+    if (tanggalItem.includes(valueInput) || deskripsiItem === valueInput) {
+      return true
+    }
+    return false
+  })
+
+  return filterItem
+}

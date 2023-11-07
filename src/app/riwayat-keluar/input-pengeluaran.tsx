@@ -3,7 +3,7 @@ import InputComponent from "@/components/input/Input";
 import useStore from "@/store/store";
 import { useShallow } from 'zustand/react/shallow';
 import { getRiwayatUser } from "@/lib/firebase/transaksi";
-import { getUserWithLocalStorage } from "@/utils";
+import { filteredItems, getUserWithLocalStorage } from "@/utils";
 import { useState } from "react";
 import AlertMessage from "@/components/alert/Alert";
 
@@ -13,24 +13,24 @@ export default function InputPengeluaran() {
     useShallow((state:any) => [state.setDataRiwayatKeluar])
   );
 
-  const getRiwayat = async (teks:string) => {
+  const getRiwayat = async (valueInput:string) => {
     const user = getUserWithLocalStorage();
     const dataRiwayat = await getRiwayatUser(user.user_id, 'pengeluaran');
     if(dataRiwayat) {
       setDataRiwayatKeluar(dataRiwayat)
-      const filterRiwayat = dataRiwayat.filter((data:any) => {
-        const tanggalItem = data.tanggal.toLowerCase();
-        const deskripsiItem = data.deskripsi.toLowerCase();
-        const valueInput = teks.toLowerCase()
+      // const filterRiwayat = dataRiwayat.filter((data:any) => {
+      //   const tanggalItem = data.tanggal.toLowerCase();
+      //   const deskripsiItem = data.deskripsi.toLowerCase();
+      //   const valueInput = teks.toLowerCase()
   
-        if (tanggalItem.includes(valueInput) || deskripsiItem === valueInput) {
-          return true
-        }
-        return false
-      })
+      //   if (tanggalItem.includes(valueInput) || deskripsiItem === valueInput) {
+      //     return true
+      //   }
+      //   return false
+      // })
+      const filterRiwayat = filteredItems(dataRiwayat, valueInput)
       console.log({filterRiwayat});
       
-  
       if(filterRiwayat.length !== 0) {
         setDataRiwayatKeluar(filterRiwayat)
       } else {
