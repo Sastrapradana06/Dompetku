@@ -18,16 +18,7 @@ export default function InputPengeluaran() {
     const dataRiwayat = await getRiwayatUser(user.user_id, 'pengeluaran');
     if(dataRiwayat) {
       setDataRiwayatKeluar(dataRiwayat)
-      // const filterRiwayat = dataRiwayat.filter((data:any) => {
-      //   const tanggalItem = data.tanggal.toLowerCase();
-      //   const deskripsiItem = data.deskripsi.toLowerCase();
-      //   const valueInput = teks.toLowerCase()
-  
-      //   if (tanggalItem.includes(valueInput) || deskripsiItem === valueInput) {
-      //     return true
-      //   }
-      //   return false
-      // })
+
       const filterRiwayat = filteredItems(dataRiwayat, valueInput)
       console.log({filterRiwayat});
       
