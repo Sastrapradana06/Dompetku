@@ -21,7 +21,6 @@ export default function RiwayatComponent() {
       if(dataRiwayatTerbaru.length === 0) {
         setIsLoading(true)
         const user = getUserWithLocalStorage();
-        // console.log(user);
         if (user) {
           const data = await getAllRiwayat(user.user_id);
           console.log({data});

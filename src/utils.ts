@@ -57,11 +57,17 @@ export const filteredItems = (item:any, key:string) => {
     const deskripsiItem = data.deskripsi.toLowerCase();
     const valueInput = key.toLowerCase()
 
-    if (tanggalItem.includes(valueInput) || deskripsiItem === valueInput) {
+    if (tanggalItem.includes(valueInput) || deskripsiItem.includes(valueInput)) {
       return true
     }
     return false
   })
 
   return filterItem
+}
+
+export const setTimeOutState = (state:any) => {
+  setTimeout(() => {
+    state(false)
+  }, 1000)
 }

@@ -13,7 +13,6 @@ export default function Header() {
 
   const dataUser:any = localStorage.getItem("data-user");
   const userData = JSON.parse(dataUser); 
-  // console.log('dari header', userData);
   
 
   return (

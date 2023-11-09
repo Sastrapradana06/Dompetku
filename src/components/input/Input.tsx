@@ -3,13 +3,12 @@
 import { useState } from 'react'
 import styles from './input.module.css'
 
-export default function InputComponent({ getRiwayat }: { getRiwayat: any }) {
+export default function InputComponent({ searchRiwayat }: { searchRiwayat: any }) {
   const [valueInput, setValueInput] = useState<string>('')
 
   const handleBtn = async () => {
-    if(valueInput !== '') {
-      await getRiwayat(valueInput)
-    }
+    const trimmedInput = valueInput.trim();
+    await searchRiwayat(trimmedInput)
     setValueInput('')
   }
   

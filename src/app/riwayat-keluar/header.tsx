@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import ButtonCreate from "@/components/button-create/button-create";
 import styles from "./page.module.css";
@@ -9,25 +9,25 @@ import { createTransaksiUser, monitorRiwayatUser } from "@/lib/firebase/transaks
 import useStore from "@/store/store";
 import { useShallow } from 'zustand/react/shallow';
 
-export default function CreatePemasukkan() {
-  const [isPopUp, setIsPopUp] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | undefined>(undefined);
-  const [setDataRiwayatMasuk, clearRiwayatTerbaruAndsemuaRiwayat] = useStore(
-    useShallow((state:any) => [state.setDataRiwayatMasuk, state.clearRiwayatTerbaruAndsemuaRiwayat])
+export default function HeaderPengeluaran() {
+  const [isPopUp, setIsPopUp] = useState<boolean>(false)
+  const [message, setMessage] = useState<string | undefined>(undefined)
+  const [setDataRiwayatKeluar, clearRiwayatTerbaruAndsemuaRiwayat] = useStore(
+    useShallow((state:any) => [state.setDataRiwayatKeluar, state.clearRiwayatTerbaruAndsemuaRiwayat])
   );
 
   const handleBtnCreate = () => {
-    setIsPopUp(true);
-  };
+    setIsPopUp(true)
+  }
 
   const handleCallback = (callback: boolean) => {
     if(callback) {
       // console.log('succes create');
-      setMessage('Berhasil Membuat Pemasukkan Baru')
+      setMessage('Berhasil Membuat Pengeluaran Baru')
       setIsPopUp(false)
     } else {
       console.log('gagal create');
-      setMessage('Gagal Membuat Pemasukkan Baru')
+      setMessage('Gagal')
     }
   }
 
@@ -46,49 +46,46 @@ export default function CreatePemasukkan() {
           deskripsi: e.target.deskripsi.value
         }
         // console.log({user, dataUser});
-        await createTransaksiUser(dataUser, "pemasukkan" , handleCallback)
-        monitorRiwayatUser(dataUser.userId, "pemasukkan", (data:any) => {
-          setDataRiwayatMasuk(data)
+        await createTransaksiUser(dataUser, "pengeluaran", handleCallback)
+        monitorRiwayatUser(dataUser.userId, "pengeluaran", (data:any) => {
+          setDataRiwayatKeluar(data)
           clearRiwayatTerbaruAndsemuaRiwayat()
         })  
+        
       }
       setMessage('Harap isi Input Dengan Benar!!')
     } else {
-      setMessage('Harap isi Input')
+      setMessage('Input Tidak Boleh Kosong!!')
     }
   }
 
   return (
     <div className={styles.teks_head}>
-      <p>Riwayat Pemasukkan Anda</p>
-      <ButtonCreate handleBtnCreate={handleBtnCreate} />
+      <p>Riwayat Pengeluaran Anda</p>
+      <ButtonCreate handleBtnCreate={handleBtnCreate}/>
       {isPopUp ? (
         <PopUpComponent>
           <div className={styles.pop_up}>
             <div className={styles.title}>
-              <h3>{!message ? 'Buat Pemasukkan Anda': message}</h3>
+              <h3>{!message ? 'Buat Pengeluaran Anda': message}</h3>
             </div>
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.jumlah}>
                 <label htmlFor="">Masukkan Nominal</label>
-                <input type="text" name="nominal" />
+                <input type="text" name="nominal" placeholder="100000"/>
               </div>
               <div className={styles.deskripsi}>
-                <label htmlFor="">Deskripsi Pemasukkan</label>
-                <input type="text" name="deskripsi" placeholder="Gaji" />
+                <label htmlFor="">Deskripsi Pengeluaran</label>
+                <input type="text" name="deskripsi" placeholder="Pulsa/ Bayar Tagihan"/>
               </div>
               <div className={styles.btn_form}>
-                <button type="submit" className={styles.btn_buat}>
-                  Buat
-                </button>
-                <button onClick={() => setIsPopUp(false)} className={styles.btn_close}>
-                  Close
-                </button>
+                <button type="submit" className={styles.btn_buat}>Buat</button>
+                <button onClick={() => setIsPopUp(false)} className={styles.btn_close}>Close</button>
               </div>
             </form>
           </div>
         </PopUpComponent>
-      ) : null}
+      ): null}
     </div>
   );
 }

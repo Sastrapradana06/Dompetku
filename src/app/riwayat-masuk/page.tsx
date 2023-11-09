@@ -3,7 +3,7 @@ import styles from './page.module.css'
 import { Metadata } from 'next'
 import InputPemasukkan from './input-pemasukan'
 import CardPemasukkan from './card-pemasukkan'
-import CreatePemasukkan from './create-pemasukkan'
+import HeaderPemasukkan from './header'
 
 export const metadata: Metadata = {
   title: 'Riwayat Masuk',
@@ -14,7 +14,7 @@ export default function RiwayatMasukPage() {
   return (
     <Main>
       <div className={styles.container}>
-        <CreatePemasukkan />
+        <HeaderPemasukkan />
         <InputPemasukkan />
         <CardPemasukkan />
       </div>

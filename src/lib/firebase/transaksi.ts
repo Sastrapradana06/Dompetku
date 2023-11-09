@@ -1,6 +1,7 @@
 import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "./service";
-import { generateRandomString, sortByDate, sortByNominal } from "@/utils";
+import { generateRandomString, sortByDate, getUserWithLocalStorage, filteredItems } from "@/utils";
+
 
 export const createTransaksiUser = async (dataUser: any, collectionName:string , callback: Function) => {
   const { userId, userName, nominal, deskripsi } = dataUser
@@ -91,6 +92,25 @@ export const deleteRiwayat = async (user_id:string ,id: string, collectionName: 
 
 }
 
-export const searchRiwayat = async () => {
-  
+export const searchRiwayatUser = async (valueInput:string, setState:any, collectionName?: string) => {
+  const user = getUserWithLocalStorage();
+
+  if(collectionName) {
+    const dataRiwayat = await getRiwayatUser(user.user_id, collectionName);
+    if(dataRiwayat) {
+      setState(dataRiwayat)
+      const filterRiwayat = filteredItems(dataRiwayat, valueInput)
+      return filterRiwayat
+    }
+
+  } else {
+    const dataAllRiwayat = await getAllRiwayat(user.user_id);
+    if(dataAllRiwayat) {
+      setState(dataAllRiwayat)
+      const filterRiwayat = filteredItems(dataAllRiwayat, valueInput)
+      return filterRiwayat
+    }
+  }
 }
+
+// export const searchRiwayatBy
