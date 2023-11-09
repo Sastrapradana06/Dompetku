@@ -71,3 +71,8 @@ export const setTimeOutState = (state:any) => {
     state(false)
   }, 1000)
 }
+
+export const handleBtnReset =  (setState:any, setBtn:any) => {
+  setState([])
+  setBtn(false)
+}

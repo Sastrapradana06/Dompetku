@@ -19,6 +19,9 @@ const useStore = create((set) => ({
   isSidebar : false,
   setIsSidebar : (state:any) => set({isSidebar: state}),
 
+  isBtnResetSearch : false,
+  setIsBtnResetSearch : (state:boolean) => set({isBtnResetSearch: state}),
+
   dataRiwayatKeluar: [],
   setDataRiwayatKeluar: (state:typeRiwayat[]) => set({dataRiwayatKeluar: state}),
 

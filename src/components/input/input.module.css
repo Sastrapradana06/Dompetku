@@ -31,12 +31,22 @@
   border-bottom: 2px solid rgb(95, 137, 243);
 }
 
-.input button {
+.input .btn_search {
   padding: 0 10px;
   font-size: .8rem;
   background-color: transparent;
   color: white;
   border: 2px solid rgb(95, 137, 243);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.input .btn_reset {
+  padding: 0 10px;
+  font-size: .8rem;
+  background-color: transparent;
+  color: white;
+  border: 2px solid crimson;
   border-radius: 5px;
   cursor: pointer;
 }

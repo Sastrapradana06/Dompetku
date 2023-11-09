@@ -9,30 +9,36 @@ import { searchRiwayatUser } from "@/lib/firebase/transaksi";
 import { setTimeOutState } from "@/utils";
 
 export default function InputMutasi( ) {
-  const [message, setMessage] = useState<boolean>(false)
-  const [setSemuaRiwayatUser] = useStore(
-    useShallow((state:any) => [state.setSemuaRiwayatUser])
+  const [message, setMessage] = useState<undefined | string>(undefined)
+  const [setSemuaRiwayatUser, setIsBtnResetSearch] = useStore(
+    useShallow((state:any) => [state.setSemuaRiwayatUser, state.setIsBtnResetSearch])
   );
   const searchRiwayat = async (valueInput:string) => {
     if(valueInput.length >= 3) {
       const data = await searchRiwayatUser(valueInput, setSemuaRiwayatUser)
       if(data.length !== 0) {
         setSemuaRiwayatUser(data)
+        setIsBtnResetSearch(true)
       } else {
-        setMessage(true)
+        setMessage('Riwayat Tidak Ditemukkan')
+        setIsBtnResetSearch(false)
         setTimeOutState(setMessage)
       }
     } else {
-      setMessage(true)
+      setMessage('Masukkan input minimal 3 huruf/angka')
       setTimeOutState(setMessage)
-      setSemuaRiwayatUser([])
     }
+  }
+
+  const handleBtnReset =  () => {
+    setSemuaRiwayatUser([])
+    setIsBtnResetSearch(false)
   }
 
   return (
     <>
-    <InputComponent searchRiwayat={searchRiwayat}/>
-    {message ? <AlertMessage message={'Riwayat Tidak Ditemukkan'}/> : null}
+    <InputComponent searchRiwayat={searchRiwayat} handleBtnReset={handleBtnReset}/>
+    {message ? <AlertMessage message={message}/> : null}
   </>
   )
 };

@@ -8,9 +8,9 @@ import { useState } from "react";
 import AlertMessage from "@/components/alert/Alert";
 
 export default function InputPengeluaran() {
-  const [message, setMessage] = useState<boolean>(false)
-  const [setDataRiwayatKeluar] = useStore(
-    useShallow((state:any) => [state.setDataRiwayatKeluar])
+  const [message, setMessage] = useState<undefined | string>(undefined)
+  const [setDataRiwayatKeluar, setIsBtnResetSearch] = useStore(
+    useShallow((state:any) => [state.setDataRiwayatKeluar, state.setIsBtnResetSearch])
   );
 
   const searchRiwayat = async (valueInput:string) => {
@@ -18,22 +18,27 @@ export default function InputPengeluaran() {
       const data = await searchRiwayatUser(valueInput, setDataRiwayatKeluar, 'pengeluaran')
       if(data.length !== 0) {
         setDataRiwayatKeluar(data)
+        setIsBtnResetSearch(true)
       } else {
-        setMessage(true)
+        setMessage('Riwayat Tidak Ditemukkan')
         setTimeOutState(setMessage)
+        setIsBtnResetSearch(false)
       }
     } else {
-      setMessage(true)
+      setMessage('Masukkan input minimal 3 huruf/angka')
       setTimeOutState(setMessage)
-      setDataRiwayatKeluar([])
     }
+  }
 
+  const handleBtnReset =  () => {
+    setDataRiwayatKeluar([])
+    setIsBtnResetSearch(false)
   }
 
   return (
     <>
-      <InputComponent searchRiwayat={searchRiwayat}/>
-      {message ? <AlertMessage message={'Riwayat Tidak Ditemukkan'}/> : null}
+      <InputComponent searchRiwayat={searchRiwayat} handleBtnReset={handleBtnReset}/>
+      {message ? <AlertMessage message={message}/> : null}
     </>
   )
 };
