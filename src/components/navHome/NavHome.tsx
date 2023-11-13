@@ -7,9 +7,11 @@ import Sidebar from "../sidebar/Sidebar";
 import useStore from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PopUpComponent from "../pop-up-component/pop-up-signOut";
 import CardImage from "./CardImage";
+import Link from "next/link";
+import { getUserWithLocalStorage } from "@/utils";
 
 
 export default function NavHome() {
@@ -18,19 +20,36 @@ export default function NavHome() {
   const router = useRouter();
   const pathname = usePathname();
   const navOff = ["/", "/login", "/register"];
-  const [setIsSidebar] = useStore(useShallow((state: any) => [state.setIsSidebar]));
+  const [setIsSidebar, resetUser, user, updateUser] = useStore(
+    useShallow((state: any) => [state.setIsSidebar, state.resetUser, state.user, state.updateUser])
+  );
 
-  const handleErrorSignOut = (callback: Function) => {
-    if (callback) {
-      router.push("/login");
-      localStorage.clear();
-    } else {
-      console.log("error signOut");
+  // const handleErrorSignOut = (callback: Function) => {
+  //   if (callback) {
+  //     router.push("/login");
+  //     resetUser()
+  //   } else {
+  //     console.log("error signOut");
+  //   }
+  // };
+
+  useEffect(() => {
+    if(!user) {
+      const getUser = getUserWithLocalStorage()
+      updateUser(getUser)
     }
-  };
+  }, [user, updateUser])
 
   const handleSignOut = () => {
-    signOutUser(handleErrorSignOut);
+    signOutUser((status:boolean) => {
+      if(status) {
+        router.push("/login");
+        resetUser()
+        localStorage.clear()
+      } else {
+        console.log("error signOut");
+      }
+    });
     setIsPopUp(false);
   };
 
@@ -65,6 +84,9 @@ export default function NavHome() {
             <div className="">
               <button onClick={() => setIsPopUp(true)} className={styles.btn}>
                 Sign Out
+              </button>
+              <button>
+                <Link href={'/login'}>Login</Link>
               </button>
             </div>
           </div>

@@ -15,15 +15,16 @@ export default function LoginPage() {
   const [isPopUp, setIsPopUp] = useState(false);
   const router = useRouter();
 
-  const [setDataRiwayatKeluar, setDataRiwayatMasuk, clearRiwayat] = useStore(
-    useShallow((state: any) => [state.setDataRiwayatKeluar, state.setDataRiwayatMasuk, state.clearRiwayat])
+  const [updateUser, setDataRiwayatKeluar, setDataRiwayatMasuk, clearRiwayat] = useStore(
+    useShallow((state: any) => [state.updateUser, state.setDataRiwayatKeluar, state.setDataRiwayatMasuk, state.clearRiwayat])
   )
 
-  const handleCallbackSiginGoogle = (callback: Function) => {
+  const handleCallbackSiginGoogle = (data:any) => {
     setIsLoading(true);
     setError(undefined);
     setIsPopUp(true);
-    if (callback) {
+    if (data) {
+      updateUser(data)
       setDataRiwayatKeluar([])
       setDataRiwayatMasuk([])
       setIsLoading(false);
@@ -44,26 +45,24 @@ export default function LoginPage() {
       password: e.target.password.value,
     };
 
-    const handleCallbackSigin = (callback: Function) => {
-      if (callback) {
-        console.log("Berhasil", callback);
-        clearRiwayat()
-        e.target.reset();
-        setIsLoading(false);
-        setIsPopUp(true);
-        router.push("/home");
-      } else {
-        console.log("Gagal", callback);
-        setError("Harap Pastikan Data Sudah Anda Benar!");
-        e.target.reset();
-        setIsPopUp(false);
-        setIsLoading(false);
-      }
-    };
-
     if (user.email && user.password) {
       setIsLoading(true);
-      signInUser(user.email, user.password, handleCallbackSigin);
+      signInUser(user.email, user.password, (data:any) => {
+        if(data) {
+          updateUser(data)
+          localStorage.setItem("data-user", JSON.stringify(data));
+          clearRiwayat()
+          e.target.reset();
+          setIsLoading(false);
+          setIsPopUp(true);
+          router.push("/home");
+        } else {
+          setError("Harap Pastikan Data Sudah Anda Benar!");
+          e.target.reset();
+          setIsPopUp(false);
+          setIsLoading(false);
+        }
+      });
     } else {
       setError("Isi Data Anda");
     }

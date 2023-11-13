@@ -3,17 +3,9 @@ import { typeRiwayat } from '@/type';
 
 
 const useStore = create((set) => ({
-  user : {
-    email: null,
-    name: null,
-    image: null,
-    usaha: null,
-    saldo: 0
-  },
+  user : undefined,
   updateUser: (data:object) => set({user: data}),
-  updateEmailUser: (email:string) => set({user: {email}}),
-  updateNamaUser: (nama:string) => set({user: {nama}}),
-  resetUser: () => set({user: {email: null, nama: null, image: null, usaha: null, saldo: 0}}),
+  resetUser: () => set({user: undefined}),
 
 
   isSidebar : false,

@@ -1,9 +1,8 @@
 
-
 import Main from "@/components/main/Main";
 import styles from "./page.module.css";
 import { Metadata } from "next";
-import InputPengeluaran from "./input-pengeluaran";
+import SearchPengeluaran from "./search-pengeluaran";
 import CardPengeluaran from "./card-pengeluaran";
 import HeaderPengeluaran from "./header";
 
@@ -18,7 +17,7 @@ export default function RiwayatKeluarPage() {
     <Main>
       <div className={styles.container}>
         <HeaderPengeluaran />
-        <InputPengeluaran />
+        <SearchPengeluaran />
         <CardPengeluaran />
       </div>
     </Main>

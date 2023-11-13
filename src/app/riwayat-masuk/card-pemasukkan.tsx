@@ -2,36 +2,29 @@
 
 import CardComponent from "@/components/card/card";
 import LoadingCard from "@/components/loading/loading-card";
-import { getRiwayatUser } from "@/lib/firebase/transaksi";
-import { getUserWithLocalStorage } from "@/utils";
+import { getRiwayatUser } from "@/lib/firebase/db";
 import { useEffect, useState } from "react";
 import useStore from "@/store/store";
-import { useShallow } from 'zustand/react/shallow';
+import { useShallow } from "zustand/react/shallow";
 
 export default function CardPemasukkan() {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  // const [dataRiwayatMasuk, setDataRiwayatMasuk] = useState<string[]>([])
-  const [dataRiwayatMasuk, setDataRiwayatMasuk] = useStore(
-    useShallow((state:any) => [state.dataRiwayatMasuk, state.setDataRiwayatMasuk])
-  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [dataRiwayatMasuk, setDataRiwayatMasuk, user] = useStore(useShallow((state: any) => [state.dataRiwayatMasuk, state.setDataRiwayatMasuk, state.user]));
 
   // console.log({ dataRiwayatMasuk });
   useEffect(() => {
     async function getData() {
-      if(dataRiwayatMasuk.length === 0) {
-        setIsLoading(true)
-        const user = getUserWithLocalStorage();
-        // console.log(user);
+      if (dataRiwayatMasuk.length === 0) {
+        setIsLoading(true);
         if (user) {
-          const data = await getRiwayatUser(user.user_id, 'pemasukkan');
+          const data = await getRiwayatUser(user.user_id, "pemasukkan");
           setDataRiwayatMasuk(data);
-          setIsLoading(false)
+          setIsLoading(false);
         }
       }
     }
     getData();
-  }, [dataRiwayatMasuk.length, setDataRiwayatMasuk]);
-
+  }, [dataRiwayatMasuk.length, setDataRiwayatMasuk, user]);
 
   return <>{!isLoading ? <CardComponent data={dataRiwayatMasuk} /> : <LoadingCard />}</>;
 }

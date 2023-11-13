@@ -8,26 +8,24 @@ import useStore from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import LoadingHeader from "@/components/loading/loading-header";
 export default function Header() {
-  const [user] = useStore(useShallow((state: any) => [state.user]));
-  // console.log("dari home", user);
+  const [user] = useStore(
+    useShallow((state: any) => [state.user])
+  )
 
-  const dataUser:any = localStorage.getItem("data-user");
-  const userData = JSON.parse(dataUser); 
-  
 
   return (
     <>
-      {dataUser ? (
+      {user ? (
         <div className={styles.card}>
           <div className={styles.hallo}>
             <p>Hallo,</p>
-            <h1>{userData.name}</h1>
+            <h1>{user.name}</h1>
           </div>
           <div className={styles.description}>
             <div className={styles.money}>
               <div className={styles.money_user}>
                 <FaMoneyBillWave size="30" fill="rgb(52, 210, 102)" />
-                <h2>Rp.{userData.saldo}</h2>
+                <h2>Rp.{user.saldo.toLocaleString("id-ID")}</h2>
               </div>
               <div className={styles.money_teks}>
                 <p>Kelola Keuanganmu dengan baik</p>

@@ -1,29 +1,17 @@
 "use client";
-import { getUserWithLocalStorage } from "@/utils";
+
 import styles from "./sidebar.module.css";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import ProfilLoading from "../loading/profil-loading";
 import imgUser from './imgUser.jpg'
-
-interface User {
-  name: string;
-  image: string;
-  usaha: string;
-}
+import useStore from "@/store/store";
+import { useShallow } from 'zustand/react/shallow';
 
 export default function Profil({ handleShowImg }: { handleShowImg: Function }) {
-  const [user, setUser] = useState<User | undefined>(undefined);
-
-  useEffect(() => {
-    console.log(user);
-      if (!user) {
-        const userData = getUserWithLocalStorage();
-        setUser(userData);
-      }
-  }, [user])
-
-
+  const [user] = useStore(
+    useShallow((state: any) => [state.user])
+  )
 
   return (
     <>

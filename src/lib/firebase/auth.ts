@@ -11,10 +11,10 @@ export const signInUser = (email: string, password: string, callback:Function) =
       const user = userCredential.user;
       const token = await user.getIdToken()
       const dataUserLogin = await getUserLogin(user.email)
-      localStorage.setItem("data-user", JSON.stringify(dataUserLogin));
+      // localStorage.setItem("data-user", JSON.stringify(dataUserLogin));
       // console.log(dataUserLogin);
       document.cookie = (`token=${token}`)
-      callback(true)
+      callback(dataUserLogin)
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -52,9 +52,9 @@ export const signInWithGoogle = (callback:Function) => {
       }
       // console.log({userData});
       await setDoc(doc(db, "users", user.uid), userData)
-      localStorage.setItem("data-user", JSON.stringify(userData));
+      // localStorage.setItem("data-user", JSON.stringify(userData));
       document.cookie = `token=${token}`
-      callback(true)
+      callback(userData)
     }).catch((err) => {
       const errorCode = err.code;
       console.log({errorCode});

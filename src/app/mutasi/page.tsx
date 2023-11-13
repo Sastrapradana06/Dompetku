@@ -1,7 +1,7 @@
 import Main from "@/components/main/Main";
 import styles from "./page.module.css";
 import { Metadata } from "next";
-import InputMutasi from "./input-mutasi";
+import SearchMutasi from "./seacrh-mutasi";
 import CardMutasi from "./card-mutasi";
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export default function MutasiPage() {
         <div className={styles.teks_head}>
           <p>Semua Riwayat Anda</p>
         </div>
-        <InputMutasi />
+        <SearchMutasi />
         <CardMutasi />
       </div>
     </Main>

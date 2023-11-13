@@ -1,7 +1,7 @@
 import Main from '@/components/main/Main'
 import styles from './page.module.css'
 import { Metadata } from 'next'
-import InputPemasukkan from './input-pemasukan'
+import SearchPemasukkan from './search-pemasukan'
 import CardPemasukkan from './card-pemasukkan'
 import HeaderPemasukkan from './header'
 
@@ -15,7 +15,7 @@ export default function RiwayatMasukPage() {
     <Main>
       <div className={styles.container}>
         <HeaderPemasukkan />
-        <InputPemasukkan />
+        <SearchPemasukkan />
         <CardPemasukkan />
       </div>
     </Main>

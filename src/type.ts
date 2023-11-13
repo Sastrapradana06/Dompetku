@@ -15,4 +15,18 @@ export type typeRiwayat = {
   user_name: string,
 };
 
+export interface UserUpdateFinance {
+  userId: string;
+  saldoUser: number; 
+  nominalInput: number,
+  type: string
+}
+
+export interface UserUpdateProfil {
+  userId: string,
+  urlImage: string,
+  username: string,
+  usaha: string
+}
+
 
