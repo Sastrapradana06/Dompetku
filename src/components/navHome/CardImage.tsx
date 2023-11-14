@@ -14,26 +14,12 @@ export default function CardImage({ handleSidebar }: { handleSidebar: Function }
     useShallow((state: any) => [state.user])
   )
 
-  useEffect(() => {
-    if(!isUserProfil) {
-      setTimeout(() => {
-        setIsUserProfil(true)
-      }, 5000)
-    }
-  }, [isUserProfil])
-
-
 
   return (
     <>
       {user ? (
         <div className={styles.img_user} onClick={() => handleSidebar()}>
-          {/* <Image src={user.image === "none" ? imgUser : user.image || ""} alt="imgUser" width={0} height={0} /> */}
-          {isUserProfil ? (
-            <Image src={user.image === "none" ? imgUser : user.image || ""} alt="imgUser" width={0} height={0} />
-          ) : (
-            <ImgProfilLoading />
-          )}
+          <Image src={user.image === "none" ? imgUser : user.image || ""} alt="imgUser" width={35} height={35} />
         </div>
       ) : (
         <div onClick={() => handleSidebar()}>

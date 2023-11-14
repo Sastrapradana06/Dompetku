@@ -53,8 +53,6 @@
 }
 
 .card_img img {
-  width: 100px;
-  height: 100px;
   border-radius: 100%;
   border: 1px solid rgb(95, 137, 243);
   overflow: hidden;

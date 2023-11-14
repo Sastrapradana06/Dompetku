@@ -31,8 +31,8 @@ export default function Sidebar() {
             <Image
               src={urlImg === 'none' ? imgUser : urlImg || ''}
               alt='imgUser'
-              width={0}
-              height={0}
+              width={200}
+              height={200}
             />
             <button onClick={() => setIsShowImg(false)}>Close</button>
           </div>

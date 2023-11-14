@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore} from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
+
 
 // apiKey: "AIzaSyAu3U6bDv62RzsAyu0n9c8hFNOh_tqUOOM",
 // authDomain: "next-login-firebase-61819.firebaseapp.com",
@@ -28,3 +30,4 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app)
 export const provider = new GoogleAuthProvider()
 export const auth = getAuth(app);
+export const storage = getStorage(app)

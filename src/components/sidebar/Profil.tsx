@@ -18,7 +18,7 @@ export default function Profil({ handleShowImg }: { handleShowImg: Function }) {
       {user ? (
         <div className={styles.profil} id="profil">
           <div className={styles.img_user} onClick={() => handleShowImg(user?.image)}>
-            <Image src={user?.image === 'none' ? imgUser : user?.image} alt="imgUser" width={0} height={0} />
+            <Image src={user?.image === 'none' ? imgUser : user?.image} alt="imgUser" width={100} height={100} />
           </div>
           <div className={styles.username}>
             <h2>{user?.name}</h2>

@@ -2,9 +2,11 @@ import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, deleteD
 import { db } from "./service";
 import { generateRandomString, sortByDate, filteredItems } from "@/utils";
 import { UserUpdateFinance, UserUpdateProfil } from "@/type";
+import { storage } from "@/lib/firebase/service";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 
-export const getUser = async (user_id:string) => {
+export const getUser = async (user_id: string) => {
   const q = query(collection(db, "users"), where("user_id", "==", user_id));
   const snapshot = await getDocs(q)
   const data = snapshot.docs.map((doc) => ({
@@ -14,7 +16,7 @@ export const getUser = async (user_id:string) => {
   return data
 }
 
-export const createTransaksiUser = async (dataUser: any, collectionName:string , callback: Function) => {
+export const createTransaksiUser = async (dataUser: any, collectionName: string, callback: Function) => {
   const { userId, userName, nominal, deskripsi } = dataUser
 
   // const transactionsRef = collection(db, collectionName);
@@ -30,7 +32,7 @@ export const createTransaksiUser = async (dataUser: any, collectionName:string ,
       nominal: parseFloat(nominal),
       deskripsi,
       date: date.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }),
-      tanggal: date.toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', }),
+      tanggal: date.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', }),
       jam: date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
       type: collectionName,
     };
@@ -46,7 +48,7 @@ export const createTransaksiUser = async (dataUser: any, collectionName:string ,
 }
 
 
-export const getRiwayatUser = async (user_id: string, collectionName:string) => {
+export const getRiwayatUser = async (user_id: string, collectionName: string) => {
   const q = query(collection(db, collectionName), where("user_id", "==", user_id));
   const snapshot = await getDocs(q)
   const data = snapshot.docs.map((doc) => ({
@@ -54,12 +56,12 @@ export const getRiwayatUser = async (user_id: string, collectionName:string) => 
     ...doc.data()
   }))
 
-  if(data) {
+  if (data) {
     const sortData = data.sort(sortByDate)
     return sortData
   }
   return data
-} 
+}
 
 export const monitorRiwayatUser = (user_id: string, collectionName: string, callback: Function) => {
   const q = query(collection(db, collectionName), where("user_id", "==", user_id), orderBy("user_id"));
@@ -70,7 +72,7 @@ export const monitorRiwayatUser = (user_id: string, collectionName: string, call
     }));
     if (data) {
       const sortData = data.sort(sortByDate);
-      callback(sortData); 
+      callback(sortData);
     }
 
   });
@@ -78,12 +80,12 @@ export const monitorRiwayatUser = (user_id: string, collectionName: string, call
 }
 
 
-export const getAllRiwayat = async (id:string,) => {
+export const getAllRiwayat = async (id: string,) => {
   const pengeluaranUser = await getRiwayatUser(id, 'pengeluaran')
   const pemasukkanUser = await getRiwayatUser(id, 'pemasukkan')
   let riwayatTerbaru;
 
-  if(pengeluaranUser || pemasukkanUser) {
+  if (pengeluaranUser || pemasukkanUser) {
     const allRiwayat = [...pengeluaranUser, ...pemasukkanUser]
     const sortedRiwayat = allRiwayat.sort(sortByDate)
     riwayatTerbaru = sortedRiwayat
@@ -94,19 +96,19 @@ export const getAllRiwayat = async (id:string,) => {
 
 
 export const deleteRiwayat = async (id: string, collectionName: string) => {
-    try {
-      await deleteDoc(doc(db, collectionName, id))
-    } catch(err) {
-      console.log(err)
-    }
+  try {
+    await deleteDoc(doc(db, collectionName, id))
+  } catch (err) {
+    console.log(err)
+  }
 
 }
 
-export const searchRiwayatUser = async (valueInput:string, setState:any, user_id:string, collectionName?: string,) => {
+export const searchRiwayatUser = async (valueInput: string, setState: any, user_id: string, collectionName?: string,) => {
 
-  if(collectionName) {
+  if (collectionName) {
     const dataRiwayat = await getRiwayatUser(user_id, collectionName);
-    if(dataRiwayat) {
+    if (dataRiwayat) {
       setState(dataRiwayat)
       const filterRiwayat = filteredItems(dataRiwayat, valueInput)
       return filterRiwayat
@@ -114,7 +116,7 @@ export const searchRiwayatUser = async (valueInput:string, setState:any, user_id
 
   } else {
     const dataAllRiwayat = await getAllRiwayat(user_id);
-    if(dataAllRiwayat) {
+    if (dataAllRiwayat) {
       setState(dataAllRiwayat)
       const filterRiwayat = filteredItems(dataAllRiwayat, valueInput)
       return filterRiwayat
@@ -123,19 +125,19 @@ export const searchRiwayatUser = async (valueInput:string, setState:any, user_id
 }
 
 
-export const updateFinanceUser = async (data:UserUpdateFinance ,callback:Function) => {
+export const updateFinanceUser = async (data: UserUpdateFinance, callback: Function) => {
   const { userId, saldoUser, nominalInput, type } = data
   try {
     let newSaldo;
-    if(type === 'pengeluaran') {
+    if (type === 'pengeluaran') {
       const reduceSaldo = saldoUser - nominalInput
       newSaldo = reduceSaldo
     } else {
       const addSaldo = saldoUser + nominalInput
       newSaldo = addSaldo
     }
-    console.log({newSaldo});
-    
+    console.log({ newSaldo });
+
     const dbUser = doc(db, "users", userId)
     const dataToUpdate = {
       saldo: newSaldo
@@ -145,13 +147,13 @@ export const updateFinanceUser = async (data:UserUpdateFinance ,callback:Functio
     const userData: any = await getUser(userId)
     callback(userData[0])
   } catch (err) {
-    console.log({err});
+    console.log({ err });
     callback(false)
   }
 }
 
-export const updateProfilUser = async (data:UserUpdateProfil, callback:Function) => {
-  const {userId, urlImage, username, usaha} = data
+export const updateProfilUser = async (data: UserUpdateProfil, callback: Function) => {
+  const { userId, urlImage, username, usaha } = data
   try {
     const dbUser = doc(db, "users", userId)
     let dataToUpdate = {
@@ -164,37 +166,33 @@ export const updateProfilUser = async (data:UserUpdateProfil, callback:Function)
     const userData: any = await getUser(userId)
     callback(userData[0])
 
-  } catch(err) {
-    console.log({err});
+  } catch (err) {
+    console.log({ err });
     callback(false)
   }
 }
 
 
-//   const { userId, urlImage, username } = data;
+export const uploadImages = async (file: any, user_id: string, callback: Function) => {
+  try {
+    const storagePath = `image-user/${user_id}/`;
+    const storageRef = ref(storage, storagePath + file.name);
+    let statusUpload;
 
-//   try {
-//     const dbUser = doc(db, "users", userId);
-//     let dataToUpdate = {};
+    await uploadBytes(storageRef, file).then((snapshot) => {
+      if(snapshot) {
+        statusUpload = true
+      }
+    });
 
-//     const newUserProfil = {};
+    if(statusUpload) {
+      await getDownloadURL(storageRef).then((url) => {
+        callback(url)
+      });
+    }
 
-//     if (urlImage) {
-//       newUserProfil.image = urlImage;
-//     }
-
-//     if (username) {
-//       newUserProfil.username = username;
-//     }
-
-//     dataToUpdate = newUserProfil;
-
-//     await updateDoc(dbUser, { ...newUserProfil });
-
-//     const userData: any = await getUser(userId);
-//     callback(userData[0]);
-//   } catch (err) {
-//     console.error({ err });
-//     callback(false);
-//   }
-// };
+  } catch (err) {
+    console.log({ err });
+    callback(false)
+  }
+}
