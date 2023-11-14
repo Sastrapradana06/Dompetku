@@ -9,7 +9,6 @@ import useStore from "@/store/store";
 import { useShallow } from 'zustand/react/shallow';
 
 export default function CardImage({ handleSidebar }: { handleSidebar: Function }) {
-  const [isUserProfil, setIsUserProfil] = useState<boolean>(false)
   const [user] = useStore(
     useShallow((state: any) => [state.user])
   )
