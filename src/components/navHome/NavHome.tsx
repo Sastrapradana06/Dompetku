@@ -24,14 +24,6 @@ export default function NavHome() {
     useShallow((state: any) => [state.setIsSidebar, state.resetUser, state.user, state.updateUser])
   );
 
-  // const handleErrorSignOut = (callback: Function) => {
-  //   if (callback) {
-  //     router.push("/login");
-  //     resetUser()
-  //   } else {
-  //     console.log("error signOut");
-  //   }
-  // };
 
   useEffect(() => {
     if(!user) {

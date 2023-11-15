@@ -3,7 +3,7 @@ import { db } from "./service";
 import { generateRandomString, sortByDate, filteredItems } from "@/utils";
 import { UserUpdateFinance, UserUpdateProfil } from "@/type";
 import { storage } from "@/lib/firebase/service";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 
 export const getUser = async (user_id: string) => {
@@ -19,7 +19,6 @@ export const getUser = async (user_id: string) => {
 export const createTransaksiUser = async (dataUser: any, collectionName: string, callback: Function) => {
   const { userId, userName, nominal, deskripsi } = dataUser
 
-  // const transactionsRef = collection(db, collectionName);
   const id = generateRandomString()
   const date = new Date()
   const transactionsRef = doc(db, collectionName, id);
@@ -173,26 +172,28 @@ export const updateProfilUser = async (data: UserUpdateProfil, callback: Functio
 }
 
 
-export const uploadImages = async (file: any, user_id: string, callback: Function) => {
+export const uploadImages = async (file: any, user_id: string, image:string) => {
+
   try {
     const storagePath = `image-user/${user_id}/`;
-    const storageRef = ref(storage, storagePath + file.name);
-    let statusUpload;
-
-    await uploadBytes(storageRef, file).then((snapshot) => {
-      if(snapshot) {
-        statusUpload = true
-      }
-    });
-
-    if(statusUpload) {
-      await getDownloadURL(storageRef).then((url) => {
-        callback(url)
-      });
+    const storageRef = ref(storage, storagePath + "user-profil");
+    console.log({image})
+    let urlImage;
+    
+    if(image != 'none') {
+      await deleteObject(storageRef)
     }
+    await uploadBytes(storageRef, file)
+    await getDownloadURL(storageRef)
+      .then((url) => urlImage = url)
+      .catch((err) => { throw err })
+  
+    return urlImage
 
   } catch (err) {
-    console.log({ err });
-    callback(false)
+    console.log({err});
+    return false
+    
   }
+
 }

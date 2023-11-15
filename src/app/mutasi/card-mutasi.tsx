@@ -25,5 +25,5 @@ export default function CardMutasi() {
     getData();
   }, [semuaRiwayatUser.length, setSemuaRiwayatUser, user]);
 
-  return <>{!isLoading ? <CardComponent data={semuaRiwayatUser} /> : <LoadingCard />}</>;
+  return <>{!isLoading ? <CardComponent data={semuaRiwayatUser} isBtnDelete={false}/> : <LoadingCard />}</>;
 }

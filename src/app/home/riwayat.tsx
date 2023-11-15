@@ -41,7 +41,7 @@ export default function RiwayatComponent() {
           <p>Diurutkan Berdasarkan Yang Terbesar</p>
         </div>
       </div>
-      {!isLoading ? <CardComponent data={dataRiwayatTerbaru} /> : <LoadingCard />}
+      {!isLoading ? <CardComponent data={dataRiwayatTerbaru} isBtnDelete={false}/> : <LoadingCard />}
     </div>
   );
 }

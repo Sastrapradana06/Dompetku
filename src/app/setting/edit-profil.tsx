@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect} from "react";
 import avatar from "@/components/sidebar/imgUser.jpg";
 import { updateProfilUser, uploadImages } from "@/lib/firebase/db";
 import useStore from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import AlertMessage from "@/components/alert/Alert";
-import { setTimeOutState } from "@/utils";
+import { setTimeOutState, getUserWithLocalStorage } from "@/utils";
 
 export default function EditProfil() {
   const [user, updateUser] = useStore(useShallow((state: any) => [state.user, state.updateUser]));
@@ -18,9 +18,14 @@ export default function EditProfil() {
   const [username, setUsername] = useState<string | any>(user ? user.name : "");
   const [usaha, setUsaha] = useState<string | any>(user ? user.usaha : "");
   const [isMessage, setIsMessage] = useState<string | undefined>(undefined);
-  const [file, setFile] = useState('')
+  const [file, setFile] = useState<string | undefined>('')
 
-
+  useEffect(() => {
+    if(!user) {
+      const getUser = getUserWithLocalStorage()
+      updateUser(getUser)
+    }
+  }, [user, updateUser])
   
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,32 +46,38 @@ export default function EditProfil() {
   const handleSubmitUpdate = async (e:any) => {
     e.preventDefault();
     setIsLoading(true)
-    const { user_id } = user;
-    console.log('masuk', file)
-    await uploadImages(file, user_id, async (url:string) => {
-      if(url) {
-        setUrlImage(url)
-        const dataUpdate = { userId: user_id, urlImage, username, usaha };
-        await updateProfilUser(dataUpdate, (data: any) => {
-          if (data) {
-            console.log({data, dataUpdate})
-            updateUser(data);
-            localStorage.setItem("data-user", JSON.stringify(data));
-            setIsLoading(false)
-            setIsMessage("Profil Berhasil Diperbarui");
-            setTimeOutState(setIsMessage);
-          } else {
-            setIsMessage("Gagal Perbarui Profil");
-            setTimeOutState(setIsMessage);
-          }
-        });
+    const { user_id, image} = user;
+
+    if(file) {
+      const uploadImage = await uploadImages(file, user_id, image)
+      if(uploadImage) { 
+        setUrlImage(uploadImage)
       } else {
-        setIsLoading(false)
         setIsMessage("Gagal Perbarui Profil");
+        setTimeOutState(setIsMessage)
+        setIsLoading(false)
+        setFile(undefined)
+        return false
+      }
+    } 
+
+    const dataUpdate = { userId: user_id, urlImage, username, usaha };
+    await updateProfilUser(dataUpdate, (data: any) => {
+      if (data) {
+        console.log({data, dataUpdate})
+        updateUser(data);
+        localStorage.setItem("data-user", JSON.stringify(data));
+        setIsLoading(false)
+        setIsMessage("Profil Berhasil Diperbarui");
         setTimeOutState(setIsMessage);
+        setFile(undefined)
+      } else {
+        setIsMessage("Gagal Perbarui Profil");
+        setTimeOutState(setIsMessage)
+        setFile(undefined)
       }
     })
-  };
+  }
 
   return (
     <div className={styles.edit_profil}>
@@ -87,7 +98,7 @@ export default function EditProfil() {
           <label htmlFor="">*Ganti Nama Usaha(optional)</label>
           <input type="text" name="usaha" value={usaha} onChange={(e) => setUsaha(e.target.value)} />
         </div>
-      <button className={styles.btn_ubah} type="submit">
+      <button className={styles.btn_ubah} type="submit" disabled={isLoading}>
         {isLoading ? 'Loading' : 'Ubah'}
       </button>
       </form>

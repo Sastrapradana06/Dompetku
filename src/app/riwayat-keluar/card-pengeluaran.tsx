@@ -26,5 +26,5 @@ export default function CardPengeluaran() {
     getData();
   }, [dataRiwayatKeluar.length, setDataRiwayatKeluar, user]);
 
-  return <>{!isLoading ? <CardComponent data={dataRiwayatKeluar} /> : <LoadingCard />}</>;
+  return <>{!isLoading ? <CardComponent data={dataRiwayatKeluar} isBtnDelete={true}/> : <LoadingCard />}</>;
 }

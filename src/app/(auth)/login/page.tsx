@@ -92,7 +92,7 @@ export default function LoginPage() {
         <div className={styles.bottom}>
           <div className={styles.opsi_login}>
             <p>Login Dengan</p>
-            <button className={styles.google} onClick={() => signInWithGoogle(handleCallbackSiginGoogle)}>
+            <button className={styles.google} onClick={() => signInWithGoogle(handleCallbackSiginGoogle)} disabled={isLoading}>
               Google
             </button>
           </div>

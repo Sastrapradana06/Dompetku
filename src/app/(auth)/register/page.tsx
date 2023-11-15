@@ -12,9 +12,8 @@ import { registerUser } from "@/lib/firebase/auth";
 export default function RegisterPage() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const auth = getAuth(app);
   const router = useRouter();
-  const db = getFirestore(app);
+
   const register = async (e: any) => {
     e.preventDefault();
     setError(undefined);

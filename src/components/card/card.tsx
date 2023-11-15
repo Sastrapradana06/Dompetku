@@ -8,7 +8,7 @@ import useStore from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import { monitorRiwayatUser, deleteRiwayat } from "@/lib/firebase/db";
 
-export default function CardComponent({ data }: { data: typeRiwayat[] }) {
+export default function CardComponent({ data, isBtnDelete }: { data: typeRiwayat[], isBtnDelete:boolean }) {
   const [setDataRiwayatKeluar, setDataRiwayatMasuk, clearRiwayatTerbaruAndsemuaRiwayat] = useStore(useShallow((state: any) => [state.setDataRiwayatKeluar, state.setDataRiwayatMasuk, state.clearRiwayatTerbaruAndsemuaRiwayat]));
   // console.log(data);
 
@@ -47,9 +47,11 @@ export default function CardComponent({ data }: { data: typeRiwayat[] }) {
                 </div>
               </div>
               <div className={styles.time}>
-                <button className={styles.btn_delete} onClick={() => handleBtnDelete(item.id, item.type, item.user_id)}>
-                  <MdDelete size="20" fill="crimson" />
-                </button>
+                {isBtnDelete ? (
+                  <button className={styles.btn_delete} onClick={() => handleBtnDelete(item.id, item.type, item.user_id)}>
+                    <MdDelete size="20" fill="crimson" />
+                  </button>
+                ) : null}
                 <p>{item.jam}</p>
               </div>
             </div>

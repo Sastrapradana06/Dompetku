@@ -26,5 +26,5 @@ export default function CardPemasukkan() {
     getData();
   }, [dataRiwayatMasuk.length, setDataRiwayatMasuk, user]);
 
-  return <>{!isLoading ? <CardComponent data={dataRiwayatMasuk} /> : <LoadingCard />}</>;
+  return <>{!isLoading ? <CardComponent data={dataRiwayatMasuk}  isBtnDelete={true}/> : <LoadingCard />}</>;
 }

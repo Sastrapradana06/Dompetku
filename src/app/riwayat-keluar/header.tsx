@@ -14,6 +14,7 @@ export default function HeaderPengeluaran() {
   const [setDataRiwayatKeluar, clearRiwayatTerbaruAndsemuaRiwayat, user, updateUser] = useStore(
     useShallow((state: any) => [state.setDataRiwayatKeluar, state.clearRiwayatTerbaruAndsemuaRiwayat, state.user, state.updateUser])
   );
+  
 
   const handleBtnCreate = () => {
     setIsPopUp(true);
@@ -58,7 +59,7 @@ export default function HeaderPengeluaran() {
         }
 
         await updateFinanceUser(dataUpdateFinanceUser, (data:any) => {
-          console.log({data});
+          // console.log({data});
           if(data) {
             updateUser(data)
           }
