@@ -11,26 +11,30 @@ import { useShallow } from "zustand/react/shallow";
 export default function HeaderPemasukkan() {
   const [isPopUp, setIsPopUp] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
+  const [nominal, setNominal] = useState('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [setDataRiwayatMasuk, clearRiwayatTerbaruAndsemuaRiwayat, user, updateUser] = useStore(useShallow((state: any) => [state.setDataRiwayatMasuk, state.clearRiwayatTerbaruAndsemuaRiwayat, state.user, state.updateUser]));
 
   const handleBtnCreate = () => {
     setIsPopUp(true);
   };
 
-  const handleCallback = (callback: boolean) => {
-    if (callback) {
-      // console.log('succes create');
-      setMessage("Berhasil Membuat Pemasukkan Baru");
-      setIsPopUp(false);
-    } else {
-      console.log("gagal create");
-      setMessage("Gagal Membuat Pemasukkan Baru");
+
+  const handleInputChange = (e:any) => {
+    setMessage(undefined);
+    const inputValue = parseFloat(e.target.value.replace(/[^\d]/g, '')); 
+    if (!isNaN(inputValue)) {
+      const formattedValue = inputValue.toLocaleString("id-ID");
+      setNominal(formattedValue);
     }
-  };
+  }
+
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const angkaPattern = /^\d+$/;
+    // const angkaPattern = /^\d+$/;
+    const angkaPattern = /^\d+(\.\d*)?$/
+    setIsLoading(true)
     setMessage(undefined);
 
     if (e.target.nominal.value && e.target.deskripsi.value) {
@@ -38,11 +42,22 @@ export default function HeaderPemasukkan() {
         const dataUser = {
           userId: user.user_id,
           userName: user.name,
-          nominal: e.target.nominal.value,
+          nominal: e.target.nominal.value.replace(/\./g, ''),
           deskripsi: e.target.deskripsi.value,
         };
         // console.log({user, dataUser});
-        await createTransaksiUser(dataUser, "pemasukkan", handleCallback);
+        await createTransaksiUser(dataUser, "pemasukkan", (callback:any) => {
+          if (callback) {
+            setIsLoading(false)
+            setMessage("Berhasil Membuat Pengeluaran Baru");
+            setIsPopUp(false);
+          } else {
+            setMessage("Gagal");
+            setIsLoading(false)
+            return false
+          }
+        });
+        
         monitorRiwayatUser(dataUser.userId, "pemasukkan", (data: any) => {
           setDataRiwayatMasuk(data);
           clearRiwayatTerbaruAndsemuaRiwayat();
@@ -56,17 +71,16 @@ export default function HeaderPemasukkan() {
         }
 
         await updateFinanceUser(dataUpdateFinanceUser, (data:any) => {
-          console.log({data});
-          if(data) {
-            updateUser(data)
-          }
+          updateUser(data)
         })
-
-
+        
+      } else {
+        setMessage("Harap isi Input Dengan Benar!!");
+        setIsLoading(false)
       }
-      setMessage("Harap isi Input Dengan Benar!!");
     } else {
       setMessage("Harap isi Input");
+      setIsLoading(false)
     }
   };
 
@@ -83,17 +97,17 @@ export default function HeaderPemasukkan() {
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.jumlah}>
                 <label htmlFor="">Masukkan Nominal</label>
-                <input type="text" name="nominal" />
+                <input type="text" name="nominal" value={nominal} onChange={handleInputChange}/>
               </div>
               <div className={styles.deskripsi}>
                 <label htmlFor="">Deskripsi Pemasukkan</label>
                 <input type="text" name="deskripsi" placeholder="Gaji" />
               </div>
               <div className={styles.btn_form}>
-                <button type="submit" className={styles.btn_buat}>
-                  Buat
+                <button type="submit" className={styles.btn_buat} disabled={isLoading}>
+                  {isLoading ? 'Loading' : 'Buat'}
                 </button>
-                <button onClick={() => setIsPopUp(false)} className={styles.btn_close}>
+                <button onClick={() => {setIsPopUp(false); setNominal('')}} className={styles.btn_close}>
                   Close
                 </button>
               </div>

@@ -11,6 +11,9 @@ import { useShallow } from "zustand/react/shallow";
 export default function HeaderPengeluaran() {
   const [isPopUp, setIsPopUp] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
+  const [nominal, setNominal] = useState('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const [setDataRiwayatKeluar, clearRiwayatTerbaruAndsemuaRiwayat, user, updateUser] = useStore(
     useShallow((state: any) => [state.setDataRiwayatKeluar, state.clearRiwayatTerbaruAndsemuaRiwayat, state.user, state.updateUser])
   );
@@ -20,20 +23,21 @@ export default function HeaderPengeluaran() {
     setIsPopUp(true);
   };
 
-  const handleCallback = (callback: boolean) => {
-    if (callback) {
-      // console.log('succes create');
-      setMessage("Berhasil Membuat Pengeluaran Baru");
-      setIsPopUp(false);
-    } else {
-      console.log("gagal create");
-      setMessage("Gagal");
+  
+  const handleInputChange = (e:any) => {
+    setMessage(undefined);
+    const inputValue = parseFloat(e.target.value.replace(/[^\d]/g, '')); 
+    if (!isNaN(inputValue)) {
+      const formattedValue = inputValue.toLocaleString("id-ID");
+      setNominal(formattedValue);
     }
-  };
+  }
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const angkaPattern = /^\d+$/;
+    // const angkaPattern = /^\d+$/;
+    const angkaPattern = /^\d+(\.\d*)?$/
+    setIsLoading(true)
     setMessage(undefined);
 
     if (e.target.nominal.value && e.target.deskripsi.value) {
@@ -41,11 +45,21 @@ export default function HeaderPengeluaran() {
         const dataUser = {
           userId: user.user_id,
           userName: user.name,
-          nominal: e.target.nominal.value,
+          nominal: e.target.nominal.value.replace(/\./g, ''),
           deskripsi: e.target.deskripsi.value,
         };
-        // console.log({user, dataUser});
-        await createTransaksiUser(dataUser, "pengeluaran", handleCallback);
+
+        await createTransaksiUser(dataUser, "pengeluaran", (callback:any) => {
+          if (callback) {
+            setIsLoading(false)
+            setMessage("Berhasil Membuat Pengeluaran Baru");
+            setIsPopUp(false);
+          } else {
+            setMessage("Gagal");
+            setIsLoading(false)
+            return false
+          }
+        });
         monitorRiwayatUser(dataUser.userId, "pengeluaran", (data: any) => {
           setDataRiwayatKeluar(data);
           clearRiwayatTerbaruAndsemuaRiwayat();
@@ -59,15 +73,16 @@ export default function HeaderPengeluaran() {
         }
 
         await updateFinanceUser(dataUpdateFinanceUser, (data:any) => {
-          // console.log({data});
-          if(data) {
-            updateUser(data)
-          }
+          updateUser(data)
         })
+        
+      } else {
+        setMessage("Harap isi Input Dengan Benar!!");
+        setIsLoading(false)
       }
-      setMessage("Harap isi Input Dengan Benar!!");
     } else {
       setMessage("Input Tidak Boleh Kosong!!");
+      setIsLoading(false)
     }
   };
 
@@ -84,15 +99,15 @@ export default function HeaderPengeluaran() {
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.jumlah}>
                 <label htmlFor="">Masukkan Nominal</label>
-                <input type="text" name="nominal" placeholder="100000" />
+                <input type="text" name="nominal" placeholder="100000"value={nominal} onChange={handleInputChange}/>
               </div>
               <div className={styles.deskripsi}>
                 <label htmlFor="">Deskripsi Pengeluaran</label>
                 <input type="text" name="deskripsi" placeholder="Pulsa/ Bayar Tagihan" />
               </div>
               <div className={styles.btn_form}>
-                <button type="submit" className={styles.btn_buat}>
-                  Buat
+                <button type="submit" className={styles.btn_buat} disabled={isLoading}>
+                  {isLoading ? 'Loading' : 'Buat'}
                 </button>
                 <button onClick={() => setIsPopUp(false)} className={styles.btn_close}>
                   Close
