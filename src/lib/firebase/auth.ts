@@ -11,8 +11,6 @@ export const signInUser = (email: string, password: string, callback:Function) =
       const user = userCredential.user;
       const token = await user.getIdToken()
       const dataUserLogin = await getUserLogin(user.email)
-      // localStorage.setItem("data-user", JSON.stringify(dataUserLogin));
-      // console.log(dataUserLogin);
       document.cookie = (`token=${token}`)
       callback(dataUserLogin)
     })
@@ -48,7 +46,8 @@ export const signInWithGoogle = (callback:Function) => {
         image: user.photoURL,
         usaha: 'none',
         saldo: 0,
-        provider: 'google'
+        provider: 'google',
+        dailyLimit: 0,
       }
       // console.log({userData});
       await setDoc(doc(db, "users", user.uid), userData)
@@ -74,7 +73,8 @@ export const registerUser = (data:userDataRegister, callback:Function) => {
         image: 'none',
         usaha: 'none',
         saldo: 0,
-        provider: 'email'
+        provider: 'email',
+        dailyLimit: 0,
       })
       callback(true)
     }).catch((err) => {

@@ -152,11 +152,11 @@ export const updateFinanceUser = async (data: UserUpdateFinance, callback: Funct
 }
 
 export const updateProfilUser = async (data: UserUpdateProfil, callback: Function) => {
-  const { userId, urlImage, username, usaha } = data
+  const { userId, newUrlImage, username, usaha } = data
   try {
     const dbUser = doc(db, "users", userId)
     let dataToUpdate = {
-      image: urlImage,
+      image: newUrlImage,
       name: username,
       usaha
     }
@@ -196,4 +196,22 @@ export const uploadImages = async (file: any, user_id: string, image:string) => 
     
   }
 
+}
+
+export const userDailyLimit = async (user_id:string, limit:string) => {
+  console.log({limit});
+  
+  try {
+    const dbUser = doc(db, "users", user_id)
+    const updateLimit = {
+      dailyLimit: parseFloat(limit)
+    }
+
+    updateDoc(dbUser, updateLimit)
+    const userNewUpdate = await getUser(user_id)
+    localStorage.setItem("data-user", JSON.stringify(userNewUpdate));
+
+  } catch (err) {
+    console.log({ err });
+  }
 }

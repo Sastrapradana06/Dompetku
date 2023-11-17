@@ -54,15 +54,18 @@ export default function HeaderPengeluaran() {
             setIsLoading(false)
             setMessage("Berhasil Membuat Pengeluaran Baru");
             setIsPopUp(false);
+            setNominal('');
           } else {
             setMessage("Gagal");
             setIsLoading(false)
+            setNominal('');
             return false
           }
         });
         monitorRiwayatUser(dataUser.userId, "pengeluaran", (data: any) => {
           setDataRiwayatKeluar(data);
           clearRiwayatTerbaruAndsemuaRiwayat();
+
         });
 
         const dataUpdateFinanceUser = {
@@ -78,10 +81,12 @@ export default function HeaderPengeluaran() {
         
       } else {
         setMessage("Harap isi Input Dengan Benar!!");
+        setNominal('');
         setIsLoading(false)
       }
     } else {
       setMessage("Input Tidak Boleh Kosong!!");
+      setNominal('');
       setIsLoading(false)
     }
   };
@@ -99,7 +104,7 @@ export default function HeaderPengeluaran() {
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.jumlah}>
                 <label htmlFor="">Masukkan Nominal</label>
-                <input type="text" name="nominal" placeholder="100000"value={nominal} onChange={handleInputChange}/>
+                <input type="text" name="nominal" placeholder="100000" value={nominal} onChange={handleInputChange}/>
               </div>
               <div className={styles.deskripsi}>
                 <label htmlFor="">Deskripsi Pengeluaran</label>

@@ -24,7 +24,7 @@ export interface UserUpdateFinance {
 
 export interface UserUpdateProfil {
   userId: string,
-  urlImage: string,
+  newUrlImage: string | undefined,
   username: string,
   usaha: string
 }

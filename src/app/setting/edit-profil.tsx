@@ -19,6 +19,7 @@ export default function EditProfil() {
   const [usaha, setUsaha] = useState<string | any>(user ? user.usaha : "");
   const [isMessage, setIsMessage] = useState<string | undefined>(undefined);
   const [file, setFile] = useState<string | undefined>('')
+  // const [newUrlImage, setNewUrlImage] = useState<string>('')
 
   useEffect(() => {
     if(!user) {
@@ -34,10 +35,11 @@ export default function EditProfil() {
       fileInputRef.current.click();
     }
   };
+  
   const handleFileChange = async  (e: any) => {
     const file = e.target.files[0]
     const url = URL.createObjectURL(e.target.files[0])
-    console.log({url});
+    // console.log({url});
     setUrlImage(url)
     setFile(file)
 
@@ -47,11 +49,14 @@ export default function EditProfil() {
     e.preventDefault();
     setIsLoading(true)
     const { user_id, image} = user;
+    let newUrlImage = urlImage
 
     if(file) {
       const uploadImage = await uploadImages(file, user_id, image)
       if(uploadImage) { 
+        // console.log({uploadImage})
         setUrlImage(uploadImage)
+        newUrlImage = uploadImage
       } else {
         setIsMessage("Gagal Perbarui Profil");
         setTimeOutState(setIsMessage)
@@ -60,11 +65,12 @@ export default function EditProfil() {
         return false
       }
     } 
+    // console.log({urlImage, newUrlImage})
 
-    const dataUpdate = { userId: user_id, urlImage, username, usaha };
+    const dataUpdate = { userId: user_id, newUrlImage, username, usaha };
     await updateProfilUser(dataUpdate, (data: any) => {
       if (data) {
-        console.log({data, dataUpdate})
+        // console.log({data, dataUpdate})
         updateUser(data);
         localStorage.setItem("data-user", JSON.stringify(data));
         setIsLoading(false)
@@ -72,6 +78,7 @@ export default function EditProfil() {
         setTimeOutState(setIsMessage);
         setFile(undefined)
       } else {
+        setIsLoading(false)
         setIsMessage("Gagal Perbarui Profil");
         setTimeOutState(setIsMessage)
         setFile(undefined)

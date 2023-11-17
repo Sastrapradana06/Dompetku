@@ -6,9 +6,9 @@ import { useShallow } from 'zustand/react/shallow'
 import Profil from './Profil';
 import ListLink from './ListLink';
 import { useState } from 'react';
-import PopUpComponent from '../pop-up-component/pop-up-signOut';
 import Image from 'next/image';
 import imgUser from './imgUser.jpg'
+import ShowImage from './show-image';
 
 export default function Sidebar() {
   const [isShowImg, setIsShowImg] = useState<Boolean>(false)
@@ -18,7 +18,6 @@ export default function Sidebar() {
   );
 
   const handleShowImg = (url:any) => {
-    console.log('masuk');
     setUrlImg(url)
     setIsShowImg(true)
   }
@@ -26,7 +25,7 @@ export default function Sidebar() {
   return (
     <main className={isSidebar ? styles.sidebar_aktif : styles.sidebar_close} >
       {isShowImg ? (
-        <PopUpComponent>
+        <ShowImage>
           <div className={styles.card_img}>
             <Image
               src={urlImg === 'none' ? imgUser : urlImg || ''}
@@ -36,7 +35,7 @@ export default function Sidebar() {
             />
             <button onClick={() => setIsShowImg(false)}>Close</button>
           </div>
-        </PopUpComponent>
+        </ShowImage>
       ): null}
       <div className={styles.close}>
         <button onClick={() => setIsSidebar(false)}>Close</button>      
