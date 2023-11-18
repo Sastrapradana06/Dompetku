@@ -1,6 +1,6 @@
 import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./service";
-import { generateRandomString, sortByDate, filteredItems } from "@/utils";
+import { generateRandomString, sortByDate, filteredItems, formatDate } from "@/utils";
 import { UserUpdateFinance, UserUpdateProfil } from "@/type";
 import { storage } from "@/lib/firebase/service";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
@@ -17,13 +17,34 @@ export const getUser = async (user_id: string) => {
 }
 
 export const createTransaksiUser = async (dataUser: any, collectionName: string, callback: Function) => {
-  const { userId, userName, nominal, deskripsi } = dataUser
-
-  const id = generateRandomString()
-  const date = new Date()
-  const transactionsRef = doc(db, collectionName, id);
-
+  const { userId, userName, nominal, deskripsi, dailyLimit } = dataUser
   try {
+    
+    const date = new Date()
+    // cek limit user
+    if(collectionName === 'pengeluaran') {
+      const currentDate = formatDate(date)
+      console.log({currentDate});
+
+      const riwayatUser = await getRiwayatUser(userId, collectionName)
+      let totalExpense:number = parseFloat(nominal)
+      if(riwayatUser) {
+        const filterUserWithDate = riwayatUser.filter((item:any) => item.tanggal == currentDate)
+        console.log({filterUserWithDate});
+        filterUserWithDate.map((item:any) => totalExpense += item.nominal)
+      }
+      console.log(totalExpense, dailyLimit)
+      if( totalExpense >= dailyLimit){
+        console.log('Mencapai Batas Limit Harian Anda')
+        callback('Failed Limit')
+        return false
+      }
+    }
+    
+
+
+    const id = generateRandomString()
+    const transactionsRef = doc(db, collectionName, id);
     const newTransaction = {
       id,
       user_id: userId,
@@ -37,12 +58,12 @@ export const createTransaksiUser = async (dataUser: any, collectionName: string,
     };
 
     await setDoc(transactionsRef, newTransaction);
-    callback(true)
+    callback('Succes')
 
     console.log("Transaksi berhasil disimpan!");
   } catch (error) {
     console.error("Terjadi kesalahan saat menyimpan transaksi:", error);
-    callback(false)
+    callback('Failed Create')
   }
 }
 
@@ -209,7 +230,7 @@ export const userDailyLimit = async (user_id:string, limit:string) => {
 
     updateDoc(dbUser, updateLimit)
     const userNewUpdate = await getUser(user_id)
-    localStorage.setItem("data-user", JSON.stringify(userNewUpdate));
+    localStorage.setItem("data-user", JSON.stringify(userNewUpdate[0]));
 
   } catch (err) {
     console.log({ err });

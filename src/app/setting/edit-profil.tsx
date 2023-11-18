@@ -10,23 +10,25 @@ import { useShallow } from "zustand/react/shallow";
 import AlertMessage from "@/components/alert/Alert";
 import { setTimeOutState, getUserWithLocalStorage } from "@/utils";
 
+const getUser:any = getUserWithLocalStorage()
 export default function EditProfil() {
   const [user, updateUser] = useStore(useShallow((state: any) => [state.user, state.updateUser]));
   
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [urlImage, setUrlImage] = useState<string | any>(user ? user.image : "");
-  const [username, setUsername] = useState<string | any>(user ? user.name : "");
-  const [usaha, setUsaha] = useState<string | any>(user ? user.usaha : "");
+  const [urlImage, setUrlImage] = useState<string | any>(user ? user.image : getUser.image);
+  const [username, setUsername] = useState<string | any>(user ? user.name : getUser.name);
+  const [usaha, setUsaha] = useState<string | any>(user ? user.usaha : getUser.usaha);
   const [isMessage, setIsMessage] = useState<string | undefined>(undefined);
   const [file, setFile] = useState<string | undefined>('')
   // const [newUrlImage, setNewUrlImage] = useState<string>('')
 
   useEffect(() => {
     if(!user) {
-      const getUser = getUserWithLocalStorage()
       updateUser(getUser)
     }
   }, [user, updateUser])
+  console.log({user, getUser})
+
   
 
   const fileInputRef = useRef<HTMLInputElement>(null);

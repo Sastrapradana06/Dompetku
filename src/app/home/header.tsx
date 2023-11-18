@@ -7,10 +7,21 @@ import Image from "next/image";
 import useStore from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import LoadingHeader from "@/components/loading/loading-header";
+import { getUserWithLocalStorage } from "@/utils";
+import { useEffect } from "react";
+
+const getUser = getUserWithLocalStorage()
+
 export default function Header() {
-  const [user] = useStore(
-    useShallow((state: any) => [state.user])
+  const [user, updateUser] = useStore(
+    useShallow((state: any) => [state.user, state.updateUser])
   )
+
+  useEffect(() => {
+    if(user) {
+      updateUser(getUser)
+    }
+  }, [user, updateUser])
 
 
   return (

@@ -1,22 +1,36 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './page.module.css'
 import useStore from '@/store/store'
 import { useShallow } from 'zustand/react/shallow'
 import { userDailyLimit } from '@/lib/firebase/db'
 import AlertMessage from '@/components/alert/Alert'
-import { setTimeOutState } from '@/utils'
+import { getUserWithLocalStorage, setTimeOutState } from '@/utils'
+
+const getUser:any = getUserWithLocalStorage()
 
 export default function SettingKeuangan() {
   const [isMessage, setIsMessage] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   
-  const [user] = useStore(
-    useShallow((state:any) => [state.user])
+  const [user, updateUser] = useStore(
+    useShallow((state:any) => [state.user, state.updateUser])
   )
-  const [updateDailyLimit, setUpdateDailyLimit] = useState<undefined | string>(user ? user.dailyLimit : undefined)
+
+  useEffect(() => {
+    if(!user) {
+      updateUser(getUser)
+    }
+  }, [user, updateUser])
+  console.log({user})
+
+  
+  const [updateDailyLimit, setUpdateDailyLimit] = useState<string>(user ? user.dailyLimit.toLocaleString("id-ID") : getUser.dailyLimit.toLocaleString("id-ID"))
+
+  console.log({user, getUser})
+
 
   const handleInputChange = (e:any) => {
     const inputValue = parseFloat(e.target.value.replace(/[^\d]/g, '')); 
@@ -27,11 +41,12 @@ export default function SettingKeuangan() {
     console.log(updateDailyLimit)
   }
 
+
   const handleBtn = async () => {
     setIsLoading(true)
-    if(updateDailyLimit !== user.dailyLimit && updateDailyLimit ) {
+    const cleanedString = updateDailyLimit ? updateDailyLimit.replace(/\./g, '') : ''
+    if(cleanedString != user.dailyLimit && updateDailyLimit ) {
       try { 
-        const cleanedString = updateDailyLimit.replace(/\./g, '')
         const {user_id} = user
         await userDailyLimit(user_id, cleanedString)
         setIsLoading(false)
@@ -54,8 +69,11 @@ export default function SettingKeuangan() {
       {isMessage ? <AlertMessage message={isMessage}/> : null}
       <div className={styles.form}>
         <div className={styles.pengeluaran}>
-          {/* <label htmlFor="">{user.dailyLimit === 0 ? "Buat Limit Harian" : "Update Limit Harian"}</label> */}
-          <label htmlFor="">Buat Limit Harian</label>
+          {user ? (
+            <label htmlFor="">{user.dailyLimit === 0 ? "Buat Limit Harian" : "Update Limit Harian"}</label> 
+          ) : (
+            <label htmlFor="">Buat Limit Harian</label>
+          )}
           <input type="text" name='pengeluaran' value={updateDailyLimit} onChange={handleInputChange}/>
         </div>
         <div className={styles.pemasukkan}>

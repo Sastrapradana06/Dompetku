@@ -47,21 +47,28 @@ export default function HeaderPengeluaran() {
           userName: user.name,
           nominal: e.target.nominal.value.replace(/\./g, ''),
           deskripsi: e.target.deskripsi.value,
+          dailyLimit: user.dailyLimit
         };
 
         await createTransaksiUser(dataUser, "pengeluaran", (callback:any) => {
-          if (callback) {
-            setIsLoading(false)
-            setMessage("Berhasil Membuat Pengeluaran Baru");
-            setIsPopUp(false);
-            setNominal('');
-          } else {
-            setMessage("Gagal");
-            setIsLoading(false)
-            setNominal('');
-            return false
+          switch (callback) {
+            case "Succes":
+              setIsPopUp(false);
+              setMessage("Berhasil Membuat Pengeluaran Baru");
+              break;
+            case "Failed Create":
+              setMessage("Gagal Membuat Pengeluaran Baru");
+              break;
+            case "Failed Limit":
+              setMessage("Transaksi Mencapai Limit Harian Anda");
+              break;
+            default:
+              setMessage("Error");
           }
+          setNominal('');
+          setIsLoading(false)
         });
+
         monitorRiwayatUser(dataUser.userId, "pengeluaran", (data: any) => {
           setDataRiwayatKeluar(data);
           clearRiwayatTerbaruAndsemuaRiwayat();

@@ -84,3 +84,7 @@ export const handleBtnReset =  (setState:any, setBtn:any) => {
   setState([])
   setBtn(false)
 }
+
+export const formatDate = (date:any) => {
+  return date.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', })
+}
