@@ -76,10 +76,10 @@ export default function SettingKeuangan() {
           )}
           <input type="text" name='pengeluaran' value={updateDailyLimit} onChange={handleInputChange}/>
         </div>
-        <div className={styles.pemasukkan}>
+        {/* <div className={styles.pemasukkan}>
           <label htmlFor="">Target Profit Dalam Sebulan</label>
           <input type="text" name='pemasukkan'/>
-        </div>
+        </div> */}
       </div>
       <button className={styles.btn_ubah} onClick={handleBtn}>{isLoading ? 'Loading' : 'Setting'}</button>
     </div>

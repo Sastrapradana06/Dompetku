@@ -32,7 +32,6 @@ export default function HeaderPemasukkan() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // const angkaPattern = /^\d+$/;
     const angkaPattern = /^\d+(\.\d*)?$/
     setIsLoading(true)
     setMessage(undefined);

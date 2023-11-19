@@ -24,16 +24,14 @@ export const createTransaksiUser = async (dataUser: any, collectionName: string,
     // cek limit user
     if(collectionName === 'pengeluaran') {
       const currentDate = formatDate(date)
-      console.log({currentDate});
 
       const riwayatUser = await getRiwayatUser(userId, collectionName)
       let totalExpense:number = parseFloat(nominal)
       if(riwayatUser) {
         const filterUserWithDate = riwayatUser.filter((item:any) => item.tanggal == currentDate)
-        console.log({filterUserWithDate});
         filterUserWithDate.map((item:any) => totalExpense += item.nominal)
       }
-      console.log(totalExpense, dailyLimit)
+
       if( totalExpense >= dailyLimit){
         console.log('Mencapai Batas Limit Harian Anda')
         callback('Failed Limit')
@@ -168,6 +166,40 @@ export const updateFinanceUser = async (data: UserUpdateFinance, callback: Funct
     localStorage.setItem("data-user", JSON.stringify(userData[0]));
     callback(userData[0])
   } catch (err) {
+    console.log({ err });
+    callback(false)
+  }
+}
+
+export const sinkronUserSaldo = async (user_id:string, callback:Function) => {
+  try {
+    const riwayatKeluar = await getRiwayatUser(user_id, 'pengeluaran')
+    const riwayatMasuk = await getRiwayatUser(user_id, 'pemasukkan')
+
+    let uangKeluar = 0;
+    let uangMasuk = 0;
+
+    if(riwayatKeluar) {
+      riwayatKeluar.map((item:any) => uangKeluar += item.nominal)
+    }
+
+    if(riwayatMasuk) {
+      riwayatMasuk.map((item:any) => uangMasuk += item.nominal)
+    }
+
+    const totalSaldo = uangMasuk - uangKeluar
+    console.log({uangKeluar, uangMasuk, totalSaldo});
+
+    const dbUser = doc(db, "users", user_id)
+    const dataToUpdate = {
+      saldo: totalSaldo
+    }
+
+    await updateDoc(dbUser, dataToUpdate)
+    const userData: any = await getUser(user_id)
+    localStorage.setItem("data-user", JSON.stringify(userData[0]));
+    callback(userData[0])
+  } catch(err) {
     console.log({ err });
     callback(false)
   }

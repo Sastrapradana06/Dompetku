@@ -4,7 +4,7 @@ import { typeRiwayat } from '@/type';
 
 const useStore = create((set) => ({
   user : undefined,
-  updateUser: (data:object) => set({user: data}),
+  updateUser: (data:any) => set({user: data}),
   resetUser: () => set({user: undefined}),
 
 
