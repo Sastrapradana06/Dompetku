@@ -7,7 +7,7 @@ export const getUserWithLocalStorage =  () => {
     return userData;
   } else {
     console.error("localStorage is not available");
-    return null
+    return {}
   }
 }
 

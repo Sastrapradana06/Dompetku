@@ -48,7 +48,7 @@ export default function EditProfil() {
   const handleSubmitUpdate = async (e:any) => {
     e.preventDefault();
     setIsLoading(true)
-    const { user_id, image, provider} = user;
+    const { user_id, image} = user;
     let newUrlImage = urlImage
 
     if(file) {
