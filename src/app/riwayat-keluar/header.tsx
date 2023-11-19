@@ -35,7 +35,8 @@ export default function HeaderPengeluaran() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const angkaPattern = /^\d+(\.\d*)?$/
+    const angkaPattern = /^(\d{1,3}(\.\d{3})*(\,\d*)?|\d+(\,\d*)?)$/;
+
     setIsLoading(true)
     setMessage(undefined);
 

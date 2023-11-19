@@ -9,11 +9,11 @@ export default function Home() {
       <div className={styles.container}>
         <div className={styles.description}>
           <div className={styles.description_title}>
-            <h1>&quot;Selamat datang di Bisnisku&quot;</h1>
-            <p>-Pentingnya menjaga keuangan untuk keberhasilan bisnis Anda-</p>
+            <h1>&quot;Selamat datang di Dompetku&quot;</h1>
+            <p>-Mengelola keuangan dengan bijak adalah seni yang mengubah kekhawatiran menjadi kebebasan-</p>
           </div>
           <div className={styles.description_body}>
-            <p>&quot;Menjaga keuangan dengan baik adalah kunci kesuksesan dalam dunia bisnis. Bagi pengusaha, keuangan yang teratur dan terkelola dengan bijak membantu dalam menghadapi tantangan dan peluang yang muncul.&quot;</p>
+            <p>&quot;Seperti arsitektur bangunan megah, konstruksi keuangan yang kokoh membutuhkan perencanaan dan fondasi yang kuat, agar mampu menopang impian yang tinggi.&quot;</p>
           </div>
         </div>
       <div className={styles.footer}>

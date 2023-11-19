@@ -86,10 +86,6 @@ export default function RegisterPage() {
           </button>
         </form>
         <div className={styles.bottom}>
-          <div className={styles.opsi_login}>
-            <p>Register Dengan</p>
-            <button className={styles.google}>Google</button>
-          </div>
           <div className={styles.register}>
             <p>Sudah Memiliki Akun?</p>
             <Link href={"/login"}>Login</Link>

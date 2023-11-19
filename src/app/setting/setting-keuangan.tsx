@@ -8,35 +8,29 @@ import { userDailyLimit } from '@/lib/firebase/db'
 import AlertMessage from '@/components/alert/Alert'
 import { getUserWithLocalStorage, setTimeOutState } from '@/utils'
 
-const getUser:any = getUserWithLocalStorage()
 
 export default function SettingKeuangan() {
   const [isMessage, setIsMessage] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  
   const [user, updateUser] = useStore(
     useShallow((state:any) => [state.user, state.updateUser])
   )
+  const [updateDailyLimit, setUpdateDailyLimit] = useState<string>(user ? user.dailyLimit.toLocaleString("id-ID") : '')
 
   useEffect(() => {
     if(!user) {
+      const getUser:any = getUserWithLocalStorage()
       updateUser(getUser)
+      setUpdateDailyLimit(getUser ? getUser.dailyLimit : '')
     }
   }, [user, updateUser])
-
-  
-  const [updateDailyLimit, setUpdateDailyLimit] = useState<string>(user ? user.dailyLimit.toLocaleString("id-ID") : getUser.dailyLimit.toLocaleString("id-ID"))
-
-
-
   const handleInputChange = (e:any) => {
     const inputValue = parseFloat(e.target.value.replace(/[^\d]/g, '')); 
     if (!isNaN(inputValue)) {
       const formattedValue = inputValue.toLocaleString("id-ID");
       setUpdateDailyLimit(formattedValue);
     }
-    console.log(updateDailyLimit)
   }
 
 
@@ -47,6 +41,7 @@ export default function SettingKeuangan() {
       try { 
         const {user_id} = user
         await userDailyLimit(user_id, cleanedString)
+        updateUser(undefined)
         setIsLoading(false)
         setIsMessage('Berhasil Mengatur Limit Harian Anda')
         setTimeOutState(setIsMessage, undefined)
@@ -68,11 +63,11 @@ export default function SettingKeuangan() {
       <div className={styles.form}>
         <div className={styles.pengeluaran}>
           {user ? (
-            <label htmlFor="">{user.dailyLimit === 0 ? "Buat Limit Harian" : "Update Limit Harian"}</label> 
+            <label htmlFor="">{updateDailyLimit == '0' ? "Buat Limit Harian (Memberikan 0 Berarti Tidak Mangatur Limit)" : "Update Limit Harian"}</label> 
           ) : (
             <label htmlFor="">Buat Limit Harian</label>
           )}
-          <input type="text" name='pengeluaran' value={updateDailyLimit} onChange={handleInputChange}/>
+          <input type="text" name='pengeluaran' value={updateDailyLimit} onChange={handleInputChange} />
         </div>
         {/* <div className={styles.pemasukkan}>
           <label htmlFor="">Target Profit Dalam Sebulan</label>

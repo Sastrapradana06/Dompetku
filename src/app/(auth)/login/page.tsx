@@ -50,12 +50,11 @@ export default function LoginPage() {
       signInUser(user.email, user.password, (data:any) => {
         if(data) {
           updateUser(data)
-          localStorage.setItem("data-user", JSON.stringify(data));
           clearRiwayat()
+          router.push("/home");
           e.target.reset();
           setIsLoading(false);
           setIsPopUp(true);
-          router.push("/home");
         } else {
           setError("Harap Pastikan Data Sudah Anda Benar!");
           e.target.reset();

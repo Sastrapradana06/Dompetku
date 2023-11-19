@@ -88,3 +88,19 @@ export const handleBtnReset =  (setState:any, setBtn:any) => {
 export const formatDate = (date:any) => {
   return date.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', })
 }
+
+export const formatTime = (date:any) => {
+  return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+}
+
+export const createCookies = (token:any) => {
+  var satuJamDariSekarang = new Date();
+  satuJamDariSekarang.setTime(satuJamDariSekarang.getTime() + 60 * 60 * 1000);
+  console.log(satuJamDariSekarang.toUTCString())
+
+  document.cookie = `token=${token}; expires=${satuJamDariSekarang.toUTCString()}`;
+} 
+
+export const createLocalStorage = (data:any) => {
+  localStorage.setItem("data-user", JSON.stringify(data));
+}

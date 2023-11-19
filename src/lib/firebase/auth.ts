@@ -4,6 +4,7 @@ import { app, db } from "./service"
 import { auth, provider } from "./service";
 import { collection, doc, getDocs, setDoc, query, where  } from "firebase/firestore";
 import { userDataRegister } from "@/type";
+import { createCookies, createLocalStorage } from "@/utils";
 
 export const signInUser = (email: string, password: string, callback:Function) => {
   signInWithEmailAndPassword(auth, email, password)
@@ -11,7 +12,8 @@ export const signInUser = (email: string, password: string, callback:Function) =
       const user = userCredential.user;
       const token = await user.getIdToken()
       const dataUserLogin = await getUserLogin(user.email)
-      document.cookie = (`token=${token}`)
+      createCookies(token)
+      createLocalStorage(dataUserLogin)
       callback(dataUserLogin)
     })
     .catch((error) => {
@@ -39,6 +41,7 @@ export const signInWithGoogle = (callback:Function) => {
       const credential = GoogleAuthProvider.credentialFromResult(result)
       const token = credential?.accessToken;
       const user = result.user;
+      const dataUserLogin = await getUserLogin(user.email)
       const userData = {
         user_id: user.uid,
         name: user.displayName,
@@ -49,11 +52,11 @@ export const signInWithGoogle = (callback:Function) => {
         provider: 'google',
         dailyLimit: 0,
       }
-      // console.log({userData});
-      await setDoc(doc(db, "users", user.uid), userData)
-      // localStorage.setItem("data-user", JSON.stringify(userData));
-      document.cookie = `token=${token}`
-      callback(userData)
+      // console.log({dataUserLogin});
+      await setDoc(doc(db, "users", user.uid), dataUserLogin ? dataUserLogin : userData)
+      localStorage.setItem("data-user", JSON.stringify(dataUserLogin ? dataUserLogin : userData));
+      createCookies(token)
+      callback(dataUserLogin ? dataUserLogin : userData)
     }).catch((err) => {
       const errorCode = err.code;
       console.log({errorCode});

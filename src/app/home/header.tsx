@@ -31,7 +31,7 @@ export default function Header() {
   const updateSaldo = async () => {
     setIsLoading(true)
     await sinkronUserSaldo(user.user_id, (data:any) => {
-      console.log({data})
+      // console.log({data})
       if(data) {
         updateUser(data)
         setIsLoading(false)

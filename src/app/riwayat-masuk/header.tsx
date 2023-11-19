@@ -32,12 +32,14 @@ export default function HeaderPemasukkan() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const angkaPattern = /^\d+(\.\d*)?$/
+    const angkaPattern = /^(\d{1,3}(\.\d{3})*(\,\d*)?|\d+(\,\d*)?)$/;
+    // const regexInput = 
     setIsLoading(true)
     setMessage(undefined);
 
     if (e.target.nominal.value && e.target.deskripsi.value) {
       if (angkaPattern.test(e.target.nominal.value)) {
+      // if (nominal.includes(regexInput)) {
         const dataUser = {
           userId: user.user_id,
           userName: user.name,

@@ -30,8 +30,8 @@ export default function Sidebar() {
             <Image
               src={urlImg === 'none' ? imgUser : urlImg || ''}
               alt='imgUser'
-              width={200}
-              height={200}
+              width={300}
+              height={300}
             />
             <button onClick={() => setIsShowImg(false)}>Close</button>
           </div>
@@ -44,7 +44,7 @@ export default function Sidebar() {
         <Profil handleShowImg={handleShowImg}/>
         <ListLink />
         <div className={styles.footer_sidebar}>
-          <p>BisnisKu.com</p>
+          <p>Dompetku.com</p>
         </div>
       </div>
     </main>

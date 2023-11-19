@@ -64,6 +64,9 @@
 
 .btn_repeat {
   background-color: transparent;
+  border: none;
+  padding-top: 5px;
+  cursor: pointer;
 }
 
 .pictures {

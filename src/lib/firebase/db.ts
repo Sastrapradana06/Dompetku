@@ -1,9 +1,9 @@
-import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, deleteDoc, doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./service";
-import { generateRandomString, sortByDate, filteredItems, formatDate } from "@/utils";
+import { generateRandomString, sortByDate, filteredItems, formatDate, formatTime, createLocalStorage } from "@/utils";
 import { UserUpdateFinance, UserUpdateProfil } from "@/type";
 import { storage } from "@/lib/firebase/service";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import {  ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 
 export const getUser = async (user_id: string) => {
@@ -19,10 +19,10 @@ export const getUser = async (user_id: string) => {
 export const createTransaksiUser = async (dataUser: any, collectionName: string, callback: Function) => {
   const { userId, userName, nominal, deskripsi, dailyLimit } = dataUser
   try {
-    
+    console.log({dailyLimit})
     const date = new Date()
     // cek limit user
-    if(collectionName === 'pengeluaran') {
+    if(collectionName === 'pengeluaran' && dailyLimit != 0) {
       const currentDate = formatDate(date)
 
       const riwayatUser = await getRiwayatUser(userId, collectionName)
@@ -39,8 +39,6 @@ export const createTransaksiUser = async (dataUser: any, collectionName: string,
       }
     }
     
-
-
     const id = generateRandomString()
     const transactionsRef = doc(db, collectionName, id);
     const newTransaction = {
@@ -49,9 +47,10 @@ export const createTransaksiUser = async (dataUser: any, collectionName: string,
       user_name: userName,
       nominal: parseFloat(nominal),
       deskripsi,
-      date: date.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }),
-      tanggal: date.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', }),
-      jam: date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      // date: date.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }),
+      date: serverTimestamp(),
+      tanggal: formatDate(date),
+      jam: formatTime(date),
       type: collectionName,
     };
 
@@ -76,6 +75,7 @@ export const getRiwayatUser = async (user_id: string, collectionName: string) =>
 
   if (data) {
     const sortData = data.sort(sortByDate)
+    // console.log('data di sort', {data, sortData})
     return sortData
   }
   return data
@@ -106,6 +106,7 @@ export const getAllRiwayat = async (id: string,) => {
   if (pengeluaranUser || pemasukkanUser) {
     const allRiwayat = [...pengeluaranUser, ...pemasukkanUser]
     const sortedRiwayat = allRiwayat.sort(sortByDate)
+    // console.log('data all di sort', {allRiwayat, sortedRiwayat})
     riwayatTerbaru = sortedRiwayat
     return riwayatTerbaru
   }
@@ -163,7 +164,7 @@ export const updateFinanceUser = async (data: UserUpdateFinance, callback: Funct
 
     await updateDoc(dbUser, dataToUpdate)
     const userData: any = await getUser(userId)
-    localStorage.setItem("data-user", JSON.stringify(userData[0]));
+    createLocalStorage(userData[0])
     callback(userData[0])
   } catch (err) {
     console.log({ err });
@@ -188,7 +189,7 @@ export const sinkronUserSaldo = async (user_id:string, callback:Function) => {
     }
 
     const totalSaldo = uangMasuk - uangKeluar
-    console.log({uangKeluar, uangMasuk, totalSaldo});
+    // console.log({uangKeluar, uangMasuk, totalSaldo});
 
     const dbUser = doc(db, "users", user_id)
     const dataToUpdate = {
@@ -197,7 +198,7 @@ export const sinkronUserSaldo = async (user_id:string, callback:Function) => {
 
     await updateDoc(dbUser, dataToUpdate)
     const userData: any = await getUser(user_id)
-    localStorage.setItem("data-user", JSON.stringify(userData[0]));
+    createLocalStorage(userData[0])
     callback(userData[0])
   } catch(err) {
     console.log({ err });
@@ -231,10 +232,11 @@ export const uploadImages = async (file: any, user_id: string, image:string) => 
   try {
     const storagePath = `image-user/${user_id}/`;
     const storageRef = ref(storage, storagePath + "user-profil");
-    console.log({image})
+    // console.log({image})
     let urlImage;
     
-    if(image != 'none') {
+    if(image.includes("user-profil")) {
+      console.log('masuk includes')
       await deleteObject(storageRef)
     }
     await uploadBytes(storageRef, file)
@@ -253,7 +255,7 @@ export const uploadImages = async (file: any, user_id: string, image:string) => 
 }
 
 export const userDailyLimit = async (user_id:string, limit:string) => {
-  console.log({limit});
+  // console.log({limit});
   
   try {
     const dbUser = doc(db, "users", user_id)
@@ -263,7 +265,7 @@ export const userDailyLimit = async (user_id:string, limit:string) => {
 
     updateDoc(dbUser, updateLimit)
     const userNewUpdate = await getUser(user_id)
-    localStorage.setItem("data-user", JSON.stringify(userNewUpdate[0]));
+    createLocalStorage(userNewUpdate[0])
 
   } catch (err) {
     console.log({ err });

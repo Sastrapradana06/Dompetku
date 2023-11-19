@@ -48,7 +48,7 @@ export default function EditProfil() {
   const handleSubmitUpdate = async (e:any) => {
     e.preventDefault();
     setIsLoading(true)
-    const { user_id, image} = user;
+    const { user_id, image, provider} = user;
     let newUrlImage = urlImage
 
     if(file) {
@@ -70,19 +70,16 @@ export default function EditProfil() {
     const dataUpdate = { userId: user_id, newUrlImage, username, usaha };
     await updateProfilUser(dataUpdate, (data: any) => {
       if (data) {
-        // console.log({data, dataUpdate})
         updateUser(data);
         localStorage.setItem("data-user", JSON.stringify(data));
-        setIsLoading(false)
         setIsMessage("Profil Berhasil Diperbarui");
         setTimeOutState(setIsMessage);
-        setFile(undefined)
       } else {
-        setIsLoading(false)
         setIsMessage("Gagal Perbarui Profil");
         setTimeOutState(setIsMessage)
-        setFile(undefined)
       }
+      setIsLoading(false)
+      setFile(undefined)
     })
   }
 
