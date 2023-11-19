@@ -35,7 +35,6 @@ export default function HeaderPengeluaran() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // const angkaPattern = /^\d+$/;
     const angkaPattern = /^\d+(\.\d*)?$/
     setIsLoading(true)
     setMessage(undefined);
@@ -50,41 +49,49 @@ export default function HeaderPengeluaran() {
           dailyLimit: user.dailyLimit
         };
 
-        await createTransaksiUser(dataUser, "pengeluaran", (callback:any) => {
+        await createTransaksiUser(dataUser, "pengeluaran", async (callback:any) => {
           switch (callback) {
             case "Succes":
-              setIsPopUp(false);
               setMessage("Berhasil Membuat Pengeluaran Baru");
+
+              monitorRiwayatUser(dataUser.userId, "pengeluaran", (data: any) => {
+                setDataRiwayatKeluar(data);
+                clearRiwayatTerbaruAndsemuaRiwayat();
+      
+              });
+      
+              const dataUpdateFinanceUser = {
+                userId: user.user_id,
+                saldoUser: user.saldo,
+                nominalInput: parseFloat(dataUser.nominal),
+                type: 'pengeluaran'
+              }
+      
+              await updateFinanceUser(dataUpdateFinanceUser, (data:any) => {
+                updateUser(data)
+              })
+
+              setNominal('');
+              setIsLoading(false)
+              setIsPopUp(false);
               break;
+
             case "Failed Create":
               setMessage("Gagal Membuat Pengeluaran Baru");
+              setIsLoading(false)
+              e.target.reset()
               break;
+
             case "Failed Limit":
               setMessage("Transaksi Mencapai Limit Harian Anda");
+              setNominal('');
+              setIsLoading(false)
               break;
             default:
               setMessage("Error");
           }
-          setNominal('');
-          setIsLoading(false)
         });
 
-        monitorRiwayatUser(dataUser.userId, "pengeluaran", (data: any) => {
-          setDataRiwayatKeluar(data);
-          clearRiwayatTerbaruAndsemuaRiwayat();
-
-        });
-
-        const dataUpdateFinanceUser = {
-          userId: user.user_id,
-          saldoUser: user.saldo,
-          nominalInput: parseFloat(dataUser.nominal),
-          type: 'pengeluaran'
-        }
-
-        await updateFinanceUser(dataUpdateFinanceUser, (data:any) => {
-          updateUser(data)
-        })
         
       } else {
         setMessage("Harap isi Input Dengan Benar!!");

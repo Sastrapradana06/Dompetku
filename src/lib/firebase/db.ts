@@ -165,6 +165,7 @@ export const updateFinanceUser = async (data: UserUpdateFinance, callback: Funct
 
     await updateDoc(dbUser, dataToUpdate)
     const userData: any = await getUser(userId)
+    localStorage.setItem("data-user", JSON.stringify(userData[0]));
     callback(userData[0])
   } catch (err) {
     console.log({ err });

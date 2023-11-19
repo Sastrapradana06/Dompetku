@@ -45,34 +45,42 @@ export default function HeaderPemasukkan() {
           nominal: e.target.nominal.value.replace(/\./g, ''),
           deskripsi: e.target.deskripsi.value,
         };
-        // console.log({user, dataUser});
-        await createTransaksiUser(dataUser, "pemasukkan", (callback:any) => {
-          if (callback) {
-            setIsLoading(false)
-            setMessage("Berhasil Membuat Pengeluaran Baru");
-            setIsPopUp(false);
-          } else {
-            setMessage("Gagal");
-            setIsLoading(false)
-            return false
+
+        await createTransaksiUser(dataUser, "pemasukkan", async (callback:any) => {
+          switch (callback) {
+            case "Succes":
+              setMessage("Berhasil Membuat Pengeluaran Baru");
+
+              monitorRiwayatUser(dataUser.userId, "pemasukkan", (data: any) => {
+                setDataRiwayatMasuk(data);
+                clearRiwayatTerbaruAndsemuaRiwayat();
+              });
+      
+              const dataUpdateFinanceUser = {
+                userId: user.user_id,
+                saldoUser: user.saldo,
+                nominalInput: parseFloat(dataUser.nominal),
+                type: 'pemasukkan'
+              }
+      
+              await updateFinanceUser(dataUpdateFinanceUser, (data:any) => {
+                updateUser(data)
+              })
+
+              setNominal('');
+              setIsLoading(false)
+              setIsPopUp(false);
+
+              break;
+            case "Failed Create":
+              setNominal('');
+              setIsLoading(false)
+              setMessage("Gagal Membuat Pengeluaran Baru");
+              break;
+            default:
+              setMessage("Error");
           }
         });
-        
-        monitorRiwayatUser(dataUser.userId, "pemasukkan", (data: any) => {
-          setDataRiwayatMasuk(data);
-          clearRiwayatTerbaruAndsemuaRiwayat();
-        });
-
-        const dataUpdateFinanceUser = {
-          userId: user.user_id,
-          saldoUser: user.saldo,
-          nominalInput: parseFloat(dataUser.nominal),
-          type: 'pemasukkan'
-        }
-
-        await updateFinanceUser(dataUpdateFinanceUser, (data:any) => {
-          updateUser(data)
-        })
         
       } else {
         setMessage("Harap isi Input Dengan Benar!!");

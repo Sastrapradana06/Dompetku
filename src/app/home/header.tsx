@@ -23,6 +23,9 @@ export default function Header() {
     }
   }, [user, updateUser])
 
+  console.log('dari home',{user});
+  
+
 
   return (
     <>
