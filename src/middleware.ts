@@ -21,16 +21,16 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // if(notProtectedPages.includes(pathname)) {
-  //   console.log('masuk halaman login');
-  //   if(token) {
-  //     req.cookies.delete('token')
-  //     console.log('token ada', token);
-  //     return NextResponse.redirect(new URL('/home', req.url))
-  //   } else {
-  //     return NextResponse.next()
-  //   }
-  // }
+  if(notProtectedPages.includes(pathname)) {
+    console.log('masuk halaman login');
+    if(token?.value) {
+      req.cookies.delete('token')
+      console.log('token ada', token);
+      return NextResponse.redirect(new URL('/home', req.url))
+    } else {
+      return NextResponse.next()
+    }
+  }
 
 }
 

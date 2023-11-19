@@ -10,7 +10,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import PopUpComponent from "../pop-up-component/pop-up-signOut";
 import CardImage from "./CardImage";
-import Link from "next/link";
 import { getUserWithLocalStorage } from "@/utils";
 
 
@@ -76,9 +75,6 @@ export default function NavHome() {
             <div className="">
               <button onClick={() => setIsPopUp(true)} className={styles.btn}>
                 Sign Out
-              </button>
-              <button>
-                <Link href={'/login'}>Login</Link>
               </button>
             </div>
           </div>

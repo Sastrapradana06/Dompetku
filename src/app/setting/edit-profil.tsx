@@ -27,9 +27,7 @@ export default function EditProfil() {
       updateUser(getUser)
     }
   }, [user, updateUser])
-  console.log({user, getUser})
 
-  
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleBtnFile = () => {

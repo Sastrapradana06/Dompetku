@@ -27,7 +27,6 @@ export default function Header() {
     }
   }, [user, updateUser])
 
-  console.log('dari home',{user});
 
   const updateSaldo = async () => {
     setIsLoading(true)

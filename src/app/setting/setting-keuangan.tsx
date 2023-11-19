@@ -24,12 +24,10 @@ export default function SettingKeuangan() {
       updateUser(getUser)
     }
   }, [user, updateUser])
-  console.log({user})
 
   
   const [updateDailyLimit, setUpdateDailyLimit] = useState<string>(user ? user.dailyLimit.toLocaleString("id-ID") : getUser.dailyLimit.toLocaleString("id-ID"))
 
-  console.log({user, getUser})
 
 
   const handleInputChange = (e:any) => {
