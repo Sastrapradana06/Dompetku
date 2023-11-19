@@ -3,8 +3,10 @@
 export const getUserWithLocalStorage =  () => {
   if (typeof localStorage !== 'undefined') {
     const dataUser = localStorage.getItem("data-user");
-    const userData = JSON.parse(dataUser ? dataUser : '');
-    return userData;
+    if(dataUser) {
+      const userData = JSON.parse(dataUser);
+      return userData;
+    }
   } else {
     console.error("localStorage is not available");
     return {}
