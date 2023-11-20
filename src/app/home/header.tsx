@@ -66,7 +66,7 @@ export default function Header() {
                 </button>
               </div>
               <div className={styles.money_teks}>
-                <p>Kelola Keuanganmu dengan baik</p>
+                <p>Kelola Keuanganmu dengan bijak</p>
                 <BsBarChartFill size="15" fill="rgb(52, 210, 102)" />
               </div>
             </div>

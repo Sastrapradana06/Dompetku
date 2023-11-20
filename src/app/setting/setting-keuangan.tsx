@@ -63,7 +63,7 @@ export default function SettingKeuangan() {
       <div className={styles.form}>
         <div className={styles.pengeluaran}>
           {user ? (
-            <label htmlFor="">{updateDailyLimit == '0' ? "Buat Limit Harian (Memberikan 0 Berarti Tidak Mangatur Limit)" : "Update Limit Harian"}</label> 
+            <label htmlFor="">{updateDailyLimit == '0' ? "Buat Limit Harian " : "Update Limit Harian"}<span>(Memberika 0 Berarti Tidak Mengatur Limit)</span></label> 
           ) : (
             <label htmlFor="">Buat Limit Harian</label>
           )}

@@ -20,7 +20,7 @@ export default function InputComponent({ searchRiwayat, handleBtnReset }: { sear
   
   return (
     <div className={styles.input}>
-      <label htmlFor="">Cari Riwayat</label>
+      <label htmlFor="">Cari</label>
       <input type="text" placeholder="item/bulan" value={valueInput} onChange={(e) => setValueInput(e.target.value)} />
       <button onClick={handleBtn} className={styles.btn_search}>Cari</button>
       {isBtnResetSearch ? <button onClick={() => handleBtnReset()} className={styles.btn_reset}>Reset</button> : null}

@@ -10,21 +10,27 @@ import { useShallow } from "zustand/react/shallow";
 import AlertMessage from "@/components/alert/Alert";
 import { setTimeOutState, getUserWithLocalStorage } from "@/utils";
 
-const getUser:any = getUserWithLocalStorage()
+// const getUser:any = getUserWithLocalStorage()
 export default function EditProfil() {
   const [user, updateUser] = useStore(useShallow((state: any) => [state.user, state.updateUser]));
   
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [urlImage, setUrlImage] = useState<string | any>(user ? user.image : getUser.image);
-  const [username, setUsername] = useState<string | any>(user ? user.name : getUser.name);
-  const [usaha, setUsaha] = useState<string | any>(user ? user.usaha : getUser.usaha);
+  const [urlImage, setUrlImage] = useState<string | any>(user ? user.image : '');
+  const [username, setUsername] = useState<string | any>(user ? user.name : '');
+  const [usaha, setUsaha] = useState<string | any>(user ? user.usaha : '');
   const [isMessage, setIsMessage] = useState<string | undefined>(undefined);
   const [file, setFile] = useState<string | undefined>('')
-  // const [newUrlImage, setNewUrlImage] = useState<string>('')
 
   useEffect(() => {
     if(!user) {
-      updateUser(getUser)
+      const getUser:any = getUserWithLocalStorage()
+      if(getUser) {
+        const {name, image, usaha} = getUser
+        updateUser(getUser)
+        setUrlImage(image)
+        setUsername(name)
+        setUsaha(usaha)
+      }
     }
   }, [user, updateUser])
 
@@ -39,7 +45,6 @@ export default function EditProfil() {
   const handleFileChange = async  (e: any) => {
     const file = e.target.files[0]
     const url = URL.createObjectURL(e.target.files[0])
-    // console.log({url});
     setUrlImage(url)
     setFile(file)
 
@@ -54,7 +59,6 @@ export default function EditProfil() {
     if(file) {
       const uploadImage = await uploadImages(file, user_id, image)
       if(uploadImage) { 
-        // console.log({uploadImage})
         setUrlImage(uploadImage)
         newUrlImage = uploadImage
       } else {
@@ -65,7 +69,6 @@ export default function EditProfil() {
         return false
       }
     } 
-    // console.log({urlImage, newUrlImage})
 
     const dataUpdate = { userId: user_id, newUrlImage, username, usaha };
     await updateProfilUser(dataUpdate, (data: any) => {
@@ -99,7 +102,7 @@ export default function EditProfil() {
           <input type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
         </div>
         <div className={styles.usaha}>
-          <label htmlFor="">*Ganti Nama Usaha(optional)</label>
+          <label htmlFor="">*Ganti Usaha Anda (Job Anda)</label>
           <input type="text" name="usaha" value={usaha} onChange={(e) => setUsaha(e.target.value)} />
         </div>
       <button className={styles.btn_ubah} type="submit" disabled={isLoading}>

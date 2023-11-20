@@ -14,7 +14,7 @@
   color: white;
   min-height: 400px;
   max-height: max-content;
-  width: 400px;
+  width: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -116,4 +116,10 @@
 .register a {
   text-decoration: none;
   color: salmon;
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    width: 400px;
+  }
 }

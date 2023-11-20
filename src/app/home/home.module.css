@@ -32,7 +32,7 @@
   height: 100%;
   /* border: 1px solid red; */
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 5px;
   align-items: center;
 }
@@ -56,8 +56,13 @@
   justify-content: center;
 }
 
+.money_user h2 {
+  font-size: 1.3rem;
+  /* border: 1px solid red; */
+}
+
 .money_teks p {
-  font-size: .7rem;
+  font-size: .5rem;
   font-style: italic;
   margin-top: 5px;
 }
@@ -91,7 +96,7 @@
 }
 
 .keterangan {
-  width: max-content;
+  width: 100%;
   height: max-content;
   padding: 5px 20px;
   background-color: rgb(39, 38, 38);
@@ -99,10 +104,10 @@
   border: 2px solid salmon;
   border-radius: 10px;
   font-size: .8rem;
-  /* font-style: italic; */
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
 }
 
 .teks_keterangan {
@@ -124,6 +129,7 @@
   border: 1px solid rgb(95, 137, 243);
   padding: 2px 10px;
   border-radius: 7px;
+  margin-left: -10px;
 }
 
 .keterangan .btn {
@@ -154,6 +160,10 @@
 
 @media screen and (min-width: 1024px) {
   /* card */
+  .description {
+    justify-content: center;
+  }
+
   .hallo p{
     font-size: 1.3rem;
   }
@@ -165,6 +175,10 @@
 
   .money_user h2 {
     font-size: 2rem;
+  }
+
+  .money_teks p {
+    font-size: .7rem;
   }
 
   .pictures {
@@ -179,6 +193,12 @@
   }
 
   /* Riwayat */
+  .keterangan {
+    width: max-content;
+    flex-direction: row;
+    align-items: center; 
+    gap: 20px;
+  }
 
   .input {
     gap: 20px;
@@ -187,5 +207,8 @@
   .input input {
     width: 50%;
     font-size: 1rem;
+  }
+  .teks_diurutkan {
+    margin-left: 0;
   }
 }
